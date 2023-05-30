@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">UserAPP</string>
+
+    <string-array name="floors">
+        <item>4F</item>
+        <item>5F</item>
+    </string-array>
+
+    <string-array name="reference_points_4F">
+        <item>4F #401</item>
+        <item>4F #402</item>
+        <item>4F #403</item>
+        <item>4F #404</item>
+        <item>4F #405</item>
+        <item>4F #406</item>
+        <item>4F #407</item>
+        <item>4F #408</item>
+        <item>4F #409</item>
+        <item>4F #410</item>
+    </string-array>
+
+    <string-array name="reference_points_5F">
+        <item>5F #501</item>
+        <item>5F #502</item>
+        <item>5F #503</item>
+        <item>5F #504</item>
+        <item>5F #505</item>
+        <item>5F #506</item>
+        <item>5F #507</item>
+        <item>5F #508</item>
+        <item>5F #509</item>
+        <item>5F #510</item>
+    </string-array>
+
+</resources>
