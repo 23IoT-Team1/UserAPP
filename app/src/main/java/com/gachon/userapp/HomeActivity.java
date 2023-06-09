@@ -19,7 +19,7 @@ public class HomeActivity extends AppCompatActivity {
         button_Next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, SelectLocationActivity.class);
+                Intent intent = new Intent(HomeActivity.this, GetLocationActivity.class);
                 startActivity(intent);
             }
         });

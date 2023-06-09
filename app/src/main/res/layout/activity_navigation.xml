@@ -5,15 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SelectLocationActivity">
+    tools:context=".NavigationActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/toolbar_background"
-        android:minHeight="?attr/actionBarSize"
-        app:title="Your current location"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,30 +22,6 @@
             android:layout_weight="0.6"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp">
-
-                <Spinner
-                 android:id="@+id/spinner_Floor"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:elevation="8dp"
-                    android:layout_marginRight="12dp" />
-                <Spinner
-                    android:id="@+id/spinner_RP"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:elevation="8dp" />
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -61,6 +30,34 @@
             android:layout_weight="2.5"
             android:gravity="center"
             android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/radiogroup_background">
+
+                <RadioButton
+                    android:id="@+id/radioButton_5F"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_radio_button"
+                    android:button="@null"
+                    android:text="5F"
+                    android:textColor="@drawable/selector_radio_text" />
+
+                <RadioButton
+                    android:id="@+id/radioButton_4F"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_radio_button"
+                    android:button="@null"
+                    android:text="4F"
+                    android:textColor="@drawable/selector_radio_text" />
+
+            </RadioGroup>
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -74,11 +71,24 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/floor4" />
 
+                <FrameLayout
+                    android:id="@+id/canvasViewFrame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
                 <ImageView
                     android:id="@+id/currentLocationPin"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:src="@drawable/pin_cur"
+                    android:visibility="invisible"
+                    />
+
+                <ImageView
+                    android:id="@+id/destinationPin"
+                    android:layout_width="12dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/pin_des"
                     android:visibility="invisible"
                     />
             </FrameLayout>
@@ -96,17 +106,39 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingTop="16dp"
+                android:paddingBottom="6dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="from : "
+                    />
+
+                <TextView
+                    android:id="@+id/textView_Current"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:fontFamily="@font/ubuntu_medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="6dp"
                 android:paddingBottom="16dp"
                 android:gravity="center">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Current Location : "
+                    android:text="to : "
                     />
 
                 <TextView
-                    android:id="@+id/textView_RP"
+                    android:id="@+id/textView_Destination"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
@@ -114,11 +146,11 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button_Next"
+                android:id="@+id/button_Navigate"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:text="Okay, Next."
+                android:text="Navigate"
                 android:background="@drawable/button_background"
                 android:elevation="8dp"
                 />

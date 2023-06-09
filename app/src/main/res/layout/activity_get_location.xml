@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".SelectLocationActivity">
+    tools:context=".GetLocationActivity"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -26,33 +26,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.4"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp">
-
-                <Spinner
-                 android:id="@+id/spinner_Floor"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:elevation="8dp"
-                    android:layout_marginRight="12dp" />
-                <Spinner
-                    android:id="@+id/spinner_RP"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:elevation="8dp" />
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -79,49 +54,76 @@
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:src="@drawable/pin_cur"
-                    android:visibility="invisible"
-                    />
+                    android:visibility="invisible" />
             </FrameLayout>
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.8"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:gravity="center">
+                android:paddingTop="30dp"
+                android:paddingBottom="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Current Location : "
-                    />
+                    android:text="Current Location : " />
 
                 <TextView
                     android:id="@+id/textView_RP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:fontFamily="@font/ubuntu_medium" />
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="~~" />
+
+                <Button
+                    android:id="@+id/button_Retry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_background"
+                    android:elevation="8dp"
+                    android:text="Retry"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
-            <Button
-                android:id="@+id/button_Next"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:text="Okay, Next."
-                android:background="@drawable/button_background"
-                android:elevation="8dp"
-                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:paddingTop="2dp">
+
+                <Button
+                    android:id="@+id/button_Right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/button_background"
+                    android:elevation="8dp"
+                    android:text="That's right! :)" />
+
+                <Button
+                    android:id="@+id/button_Wrong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_background"
+                    android:elevation="8dp"
+                    android:text="That's wrong. :(" />
+            </LinearLayout>
+
+
         </LinearLayout>
+
     </LinearLayout>
+
 </LinearLayout>

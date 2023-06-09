@@ -6,30 +6,238 @@
         <item>5F</item>
     </string-array>
 
-    <string-array name="reference_points_4F">
-        <item>4F #401</item>
-        <item>4F #402</item>
-        <item>4F #403</item>
-        <item>4F #404</item>
-        <item>4F #405</item>
-        <item>4F #406</item>
-        <item>4F #407</item>
-        <item>4F #408</item>
-        <item>4F #409</item>
-        <item>4F #410</item>
+    <string-array name="user_4F">
+        <item>4층 아르테크네</item>
+        <item>401호 앞</item>
+        <item>402호 앞</item>
+        <item>403호 앞</item>
+        <item>404호 앞</item>
+        <item>405호 앞</item>
+        //4_26
+        <item>406호 앞</item>
+        <item>407호 앞</item>
+        <item>407A호 앞</item>
+        <item>408호 앞 (계단 앞)</item>
+        <item>409호 앞</item>
+        <item>410호 앞</item>
+        <item>411호 앞 (계단 앞)</item>
+        <item>412호 앞</item>
+        //4_16
+        <item>413호 앞</item>
+        <item>414호 앞</item>
+        <item>415호 앞</item>
+        <item>416호 앞</item>
+        <item>417호 앞</item>
+        <item>418호 앞</item>
+        <item>419호 앞</item>
+        <item>420호 앞</item>
+        <item>421호 앞</item>
+        <item>422호 앞</item>
+        <item>423호 앞</item>
+        <item>424호 앞</item>
+        <item>425호 앞</item>
+        <item>426호 앞</item>
+        <item>427호 앞</item>
+        <item>428호 앞</item>
+        <item>429호 앞</item>
+        <item>430호 앞</item>
+        <item>431호 앞</item>
+        <item>432호 앞</item>
+        <item>433호 앞</item>
+        <item>434호 앞</item>
+        <item>435호 앞</item>
+        <item>4층 테라스</item>
+        <item>401호 옆 계단</item>
+        <item>416호 옆 계단</item>
+        <item>복정 방향 엘리베이터 앞</item>
+        <item>중간 엘리베이터 앞</item>
+        <item>운동장 방향 엘리베이터 앞</item>
+        <item>운동장 방향 엘리베이터 옆 복도</item>
+        //4_48
     </string-array>
 
-    <string-array name="reference_points_5F">
-        <item>5F #501</item>
-        <item>5F #502</item>
-        <item>5F #503</item>
-        <item>5F #504</item>
-        <item>5F #505</item>
-        <item>5F #506</item>
-        <item>5F #507</item>
-        <item>5F #508</item>
-        <item>5F #509</item>
-        <item>5F #510</item>
+    <string-array name="user_5F">
+        <item>5층 아르테크네</item>
+        <item>501호 앞</item>
+        <item>502호 앞</item>
+        <item>503호 앞</item>
+        <item>504호 앞</item>
+        <item>505호 앞</item>
+        //5_26
+        <item>506호 앞</item>
+        <item>507호 앞</item>
+        <item>507A호 앞</item>
+        <item>508호 앞 (계단 앞)</item>
+        <item>509호 앞</item>
+        <item>510호 앞</item>
+        <item>511호 앞 (계단 앞)</item>
+        <item>512호 앞</item>
+        //5_16
+        <item>513호 앞</item>
+        <item>514호 앞</item>
+        <item>515호 앞</item>
+        <item>516호 앞</item>
+        <item>517호 앞</item>
+        <item>518호 앞</item>
+        <item>519호 앞</item>
+        <item>520호 앞</item>
+        <item>521호 앞</item>
+        <item>522호 앞</item>
+        <item>523호 앞</item>
+        <item>524호 앞</item>
+        <item>525호 앞</item>
+        <item>526호 앞</item>
+        <item>527호 앞</item>
+        <item>528호 앞</item>
+        <item>529호 앞</item>
+        <item>530호 앞</item>
+        <item>531호 앞</item>
+        <item>532호 앞</item>
+        <item>G-CUBE</item>
+        <item>501호 옆 계단</item>
+        //5_32
+        <item>519호 옆 계단</item>
+        //5_9
+        <item>복정 방향 엘리베이터 앞</item>
+        <item>중간 엘리베이터 앞</item>
+        <item>운동장 방향 엘리베이터 앞</item>
+        <item>운동장 방향 엘리베이터 옆 복도</item>
+        //5_45
+    </string-array>
+
+
+    <string-array name="place_4F">
+        <item>4층 아르테크네 ~ 4_1</item>
+        // 코너
+        <item>425호 앞 ~ 4_2</item>
+        <item>424호 앞 ~ 4_3</item>
+        <item>423호 앞 ~ 4_4</item>
+        <item>422호 앞 ~ 4_5</item>
+        <item>421호 앞 ~ 4_6</item>
+        <item>420호 앞 ~ 4_7</item>
+        <item>419호 앞 ~ 4_8</item>
+        <item>418호 앞 ~ 4_9</item>
+        // 코너
+        <item>417호 앞 ~ 4_10</item>
+        <item>416호 앞 ~ 4_11</item>
+        <item>416호 옆 계단 ~ 4_12</item>
+        // 계단
+        <item>415호 앞 ~ 4_13</item>
+        <item>414호 앞 ~ 4_14</item>
+        <item>413호 앞 ~ 4_15</item>
+        <item>412호 앞 ~ 4_16</item>
+        // 코너
+        <item>412호 사물함 앞 ~ 4_17</item>
+        <item>411호 앞 (계단 앞) ~ 4_18</item>
+        // 계단 // 코너
+        <item>410호 앞 ~ 4_19</item>
+        <item>409호 앞 ~ 4_20</item>
+        // 코너
+        <item>408호 앞 (계단 앞) ~ 4_21</item>
+        // 계단
+        <item>407호 앞 ~ 4_22</item>
+        // 코너
+        <item>407A호 앞 ~ 4_23</item>
+        <item>406호 앞 ~ 4_24</item>
+        <item>405호 앞 ~ 4_25</item>
+        <item>405호 앞 ~ 4_26</item>
+        // 코너
+        <item>405호 앞 ~ 4_27</item>
+        <item>404호 앞 ~ 4_28</item>
+        <item>403호 앞 ~ 4_29</item>
+        <item>402호 앞 ~ 4_30</item>
+        <item>401호 앞 ~ 4_31</item>
+        <item>401호 옆 계단 ~ 4_32</item>
+        // 계단
+        <item>435호 앞 ~ 4_33</item>
+        <item>434호 앞 ~ 4_34</item>
+        <item>433호 앞 ~ 4_35</item>
+        // 코너
+        <item>432호 앞 ~ 4_36</item>
+        <item>431호 앞 ~ 4_37</item>
+        <item>430호 앞 ~ 4_38</item>
+        <item>429호 앞 ~ 4_39</item>
+        <item>428호 앞 ~ 4_40</item>
+        <item>427호 앞 ~ 4_41</item>
+        <item>426호 앞 ~ 4_42</item>
+        <item>복정 방향 엘리베이터 앞 ~ 4_43</item>
+        // 계단, 엘베 // 코너
+        <item>중간 엘리베이터 앞 ~ 4_44</item>
+        // 엘베 // 코너(테라스)
+        <item>4층 테라스 ~ 4_45</item>
+        <item>운동장 방향 엘리베이터 옆 복도 ~ 4_46</item>
+        <item>운동장 방향 엘리베이터 옆 복도 ~ 4_47</item>
+        // 코너
+        <item>운동장 방향 엘리베이터 옆 복도 ~ 4_48</item>
+        <item>운동장 방향 엘리베이터 앞 ~ 4_49</item>
+        // 엘베
+    </string-array>
+
+
+    <string-array name="place_5F">
+        <item>5층 아르테크네 ~ 5_1</item>
+        // 코너
+        <item>525호 앞 ~ 5_2</item>
+        <item>524호 앞 ~ 5_3</item>
+        <item>523호 앞 ~ 5_4</item>
+        <item>522호 앞 ~ 5_5</item>
+        <item>521호 앞 ~ 5_6</item>
+        <item>520호 앞 ~ 5_7</item>
+        // 코너
+        <item>519호 앞 ~ 5_8</item>
+        <item>519호 옆 계단 ~ 5_9</item>
+        // 계단
+        <item>518호 앞 ~ 5_10</item>
+        <item>517호 앞 ~ 5_11</item>
+        <item>516호 앞 ~ 5_12</item>
+        <item>515호 앞 ~ 5_13</item>
+        <item>514호 앞 ~ 5_14</item>
+        // 코너
+        <item>513호 앞 ~ 5_15</item>
+        <item>512호 앞 ~ 5_16</item>
+        // 코너
+        <item>512호 앞 ~ 5_17</item>
+        <item>511호 앞 (계단 앞) ~ 5_18</item>
+        // 계단 // 코너
+        <item>510호 앞 ~ 5_19</item>
+        <item>509호 앞 ~ 5_20</item>
+        // 코너
+        <item>508호 앞 (계단 앞) ~ 5_21</item>
+        // 계단
+        <item>507호 앞 ~ 5_22</item>
+        // 코너
+        <item>507A호 앞 ~ 5_23</item>
+        <item>506호 앞 ~ 5_24</item>
+        <item>505호 앞 ~ 5_25</item>
+        <item>505호 앞 ~ 5_26</item>
+        // 코너
+        <item>505호 앞 ~ 5_27</item>
+        <item>504호 앞 ~ 5_28</item>
+        <item>503호 앞 ~ 5_29</item>
+        // 코너
+        <item>502호 앞 ~ 5_30</item>
+        <item>501호 앞 ~ 5_31</item>
+        <item>501호 옆 계단 ~ 5_32</item>
+        // 계단
+        <item>532호 앞 ~ 5_33</item>
+        <item>531호 앞 ~ 5_34</item>
+        // 코너
+        <item>530호 앞 ~ 5_35</item>
+        <item>529호 앞 ~ 5_36</item>
+        <item>528호 앞 ~ 5_37</item>
+        <item>527호 앞 ~ 5_38</item>
+        <item>526호 앞 ~ 5_39</item>
+        <item>복정 방향 엘리베이터 앞 ~ 5_40</item>
+        // 계단, 엘베 // 코너
+        <item>중간 엘리베이터 앞 ~ 5_41</item>
+        // 엘베
+        <item>G-CUBE ~ 5_42</item>
+        <item>운동장 방향 엘리베이터 옆 복도 ~ 5_43</item>
+        <item>운동장 방향 엘리베이터 옆 복도 ~ 5_44</item>
+        // 코너
+        <item>운동장 방향 엘리베이터 옆 복도 ~ 5_45</item>
+        <item>운동장 방향 엘리베이터 앞 ~ 5_46</item>
+        // 엘베
     </string-array>
 
 </resources>
