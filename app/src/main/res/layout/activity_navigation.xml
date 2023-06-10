@@ -12,22 +12,73 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
         android:weightSum="4">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.6"
-            android:orientation="vertical">
+            android:layout_weight="0.7"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
+            android:orientation="vertical"
+            android:background="@drawable/direction_layout_background">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView_direction"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/d_right"
+                    />
+                <TextView
+                    android:id="@+id/textView_DistanceToChangePoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/imageView_direction"
+                    android:layout_above="@id/textView_Direction"
+                    android:layout_centerVertical="true"
+                    android:text="5m"
+                    android:textSize="36sp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    />
+                <TextView
+                    android:id="@+id/textView_Direction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/textView_ChangePointPlace"
+                    android:layout_alignLeft="@id/textView_DistanceToChangePoint"
+                    android:text="Turn right at "
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:id="@+id/textView_ChangePointPlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignLeft="@id/textView_Direction"
+                    android:text="운동장 방향 엘리베이터 앞"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    />
+
+            </RelativeLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2.5"
+            android:layout_weight="2.65"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -98,62 +149,108 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.8"
+            android:layout_weight="0.05"
             android:orientation="vertical">
+        </LinearLayout>
 
-            <LinearLayout
+
+        <View
+            android:background="@color/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:orientation="vertical"
+            android:paddingLeft="54dp"
+            android:paddingRight="54dp"
+            >
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="16dp"
-                android:paddingBottom="6dp"
-                android:gravity="center">
+                android:layout_height="match_parent">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="from : "
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="6dp">
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/pin_cur"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="from : "
+                            />
+
+                        <TextView
+                            android:id="@+id/textView_Current"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:fontFamily="@font/ubuntu_medium" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="6dp"
+                            android:src="@drawable/pin_des"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="     to : "
+                            />
+
+                        <TextView
+                            android:id="@+id/textView_Destination"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:fontFamily="@font/ubuntu_medium" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/button_Navigate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="Navigate "
+                    android:drawableRight="@drawable/arrow_size"
+                    android:background="@drawable/button_background"
+                    android:elevation="8dp"
                     />
 
-                <TextView
-                    android:id="@+id/textView_Current"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:fontFamily="@font/ubuntu_medium" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="6dp"
-                android:paddingBottom="16dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="to : "
-                    />
-
-                <TextView
-                    android:id="@+id/textView_Destination"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:fontFamily="@font/ubuntu_medium" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/button_Navigate"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:text="Navigate"
-                android:background="@drawable/button_background"
-                android:elevation="8dp"
-                />
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
