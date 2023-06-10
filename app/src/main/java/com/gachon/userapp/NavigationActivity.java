@@ -1,15 +1,20 @@
 package com.gachon.userapp;
 
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -17,7 +22,6 @@ public class NavigationActivity extends AppCompatActivity {
 
     final int CURRENT_PIN_SIZE_HALF = 6;
     RP rp = new RP();
-    ArrayList<Integer> pathIndex;
     float view_scale;
     float density;
     String currentPlace;
@@ -34,6 +38,11 @@ public class NavigationActivity extends AppCompatActivity {
         canvasViewFrame = findViewById(R.id.canvasViewFrame);
         currentLocationPin = findViewById(R.id.currentLocationPin);
         destinationPin = findViewById(R.id.destinationPin);
+        radioButton_4F = findViewById(R.id.radioButton_4F);
+        radioButton_5F = findViewById(R.id.radioButton_5F);
+        radioGroup = findViewById(R.id.radioGroup);
+        textView_Current = findViewById(R.id.textView_Current);
+        textView_Destination = findViewById(R.id.textView_Destination);
 
         // Get Intent (rp of current location)
         Intent intent = getIntent();
@@ -62,9 +71,39 @@ public class NavigationActivity extends AppCompatActivity {
             public void run()
             {
                 // add canvas view
-                pathIndex = rp.getPath();   // path arraylist 받아오기
-                canvasView = new CanvasView(getApplicationContext(), pathIndex, view_scale);
+                ArrayList<Point> pathOfFloor4 = rp.getPathOfFloor4();   // 4층 path arraylist 받아오기
+                ArrayList<Point> pathOfFloor5 = rp.getPathOfFloor5();   // 5층 path arraylist 받아오기
+                canvasView = new CanvasView(getApplicationContext(), view_scale, pathOfFloor4, pathOfFloor5);
                 canvasViewFrame.addView(canvasView);
+
+                //라디오 그룹 클릭 리스너 (각 층에 있는 맵핀과 path만 보이게)
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                        if(i == R.id.radioButton_4F){
+                            imageView.setImageResource(R.drawable.floor4);
+                            if (currentRP.startsWith("4")) { currentLocationPin.setVisibility(View.VISIBLE); }
+                            else { currentLocationPin.setVisibility(View.INVISIBLE); }
+                            if (destinationRP.startsWith("4")) { destinationPin.setVisibility(View.VISIBLE); }
+                            else { destinationPin.setVisibility(View.INVISIBLE); }
+                            canvasView.isFloor4 = true;
+                            canvasView.invalidate();
+                        }
+                        else if(i == R.id.radioButton_5F){
+                            imageView.setImageResource(R.drawable.floor5);
+                            if (currentRP.startsWith("5")) { currentLocationPin.setVisibility(View.VISIBLE); }
+                            else { currentLocationPin.setVisibility(View.INVISIBLE); }
+                            if (destinationRP.startsWith("5")) { destinationPin.setVisibility(View.VISIBLE); }
+                            else { destinationPin.setVisibility(View.INVISIBLE); }
+                            canvasView.isFloor4 = false;
+                            canvasView.invalidate();
+                        }
+                    }
+                });
+
+                // set textView
+                textView_Current.setText(currentPlace);
+                textView_Destination.setText(destinationPlace);
 
                 // add map pins
                 int x_c = rp.getRpList().get(rp.rpToIndex(currentRP)).getX();
@@ -72,13 +111,21 @@ public class NavigationActivity extends AppCompatActivity {
                 int x_d = rp.getRpList().get(rp.rpToIndex(destinationRP)).getX();
                 int y_d = rp.getRpList().get(rp.rpToIndex(destinationRP)).getY();
 
-                // 맵핀 위치 바꾸기
+                // 맵핀 위치 초기 세팅 (5초마다 업데이트할 때도 여기 코드 가져다 쓰기)
                 currentLocationPin.setVisibility(View.VISIBLE);
                 currentLocationPin.setX((x_c / view_scale - CURRENT_PIN_SIZE_HALF) * density);
                 currentLocationPin.setY((y_c / view_scale - CURRENT_PIN_SIZE_HALF) * density);
                 destinationPin.setVisibility(View.VISIBLE);
                 destinationPin.setX((x_d / view_scale - CURRENT_PIN_SIZE_HALF) * density);
-                destinationPin.setY((y_d / view_scale - 11) * density);
+                destinationPin.setY((y_d / view_scale - 13) * density);
+
+                // current location이 있는 층으로 spinner랑 radioButton 초기화
+                if (currentRP.startsWith("4")) {
+                    radioButton_4F.setChecked(true);
+                }
+                else {
+                    radioButton_5F.setChecked(true);
+                }
             }
         }, 200);// 0.2초 딜레이를 준 후 시작
 
@@ -95,4 +142,10 @@ public class NavigationActivity extends AppCompatActivity {
     private CanvasView canvasView;
     private ImageView currentLocationPin;
     private ImageView destinationPin;
+    private RadioGroup radioGroup;
+    private RadioButton radioButton_4F;
+    private RadioButton radioButton_5F;
+    private TextView textView_Current;
+    private TextView textView_Destination;
+
 }

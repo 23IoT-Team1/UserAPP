@@ -200,7 +200,7 @@ public class SelectDestinationActivity extends AppCompatActivity {
         button_Navigate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 출발지&목적지의 place, rp, view_scale 넘겨주면서, navigation activity로 이동
+                // 출발지&목적지의 place, rp 넘겨주면서, navigation activity로 이동
                 Intent intent = new Intent(SelectDestinationActivity.this, NavigationActivity.class);
                 intent.putExtra("current_place", currentPlace);
                 intent.putExtra("current_rp", currentRP);

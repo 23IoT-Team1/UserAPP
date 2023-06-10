@@ -1,5 +1,6 @@
 package com.gachon.userapp;
 
+import android.graphics.Point;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -9,8 +10,12 @@ import java.util.HashMap;
 public class RP {
 
     private static final double INFINITY = Double.POSITIVE_INFINITY;    // for dijkstra
-    private static final double STAIR = 10.0;   // 계단,엘베끼리의 거리 가중치
-    private ArrayList<Integer> path = new ArrayList<>();
+    private static final double STAIR = 100.0;   // 계단,엘베끼리의 거리 가중치
+    private ArrayList<Integer> pathIndex = new ArrayList<>();
+    private ArrayList<Point> pathPoint = new ArrayList<>();
+    private ArrayList<String> pathDirection = new ArrayList<>();
+    private ArrayList<Point> pathOfFloor4 = new ArrayList<>();
+    private ArrayList<Point> pathOfFloor5 = new ArrayList<>();
 
 
     public RP() {}
@@ -93,20 +98,156 @@ public class RP {
 
             while (node != startNode) {
                 node = previous[node];
-                path.add(0, node);
+                pathIndex.add(0, node);
             }
-            path.add(endNode);
-//            path.remove(0);   // 같이 보내준 후에 따로 뺄 거라 remove 하지 않기
+            pathIndex.add(endNode);
         }
 
+        setDirectionList();
+
     }
+
+    // set direction list to guide
+    public void setDirectionList() {
+
+        // path의 좌표 arraylist
+        for (int i : pathIndex) {
+            pathPoint.add(new Point(rpList.get(i).getX(), rpList.get(i).getY()));
+        }
+
+        // path의 방향 arraylist를 pathPoint를 기반으로 생성
+        //// "way" / "left" / "right"/ "elevator" / "destination"
+        //// "endOfFloor" 추가. 엘베로 층 바뀌기 전 마지막 노드
+
+        if (pathPoint.size() > 2) { // 일반적인 경우
+
+            // 1. 출발지 노드
+            if (isElevatorNode(0) && isElevatorNode(1)) { 
+                pathDirection.add("endOfFloor"); // 나도 엘베 다음도 엘베면 난 그 층의 마지막 노드
+            }
+            else { pathDirection.add("way"); }  
+
+            // 2. 중간 노드
+            for (int i = 1; i < pathPoint.size() - 1; i++) {
+                Point previous = pathPoint.get(i - 1);
+                Point now = pathPoint.get(i);
+                Point next = pathPoint.get(i + 1);
+
+                if (isElevatorNode(i) && isElevatorNode(i+1)) { 
+                        pathDirection.add("endOfFloor");    // 나&다음이 엘베면 난 그 층의 마지막 노드
+                }
+                else if (isElevatorNode(i) && isElevatorNode(i-1)) {
+                    pathDirection.add("elevator");  // 나&이전이 엘베면 난 다음 층의 첫 노드
+                }
+                else {  // 나머지는 way 혹은 방향
+                    // calculate ccw
+                    int ccw = ((now.x - previous.x) * (next.y - previous.y)) - ((next.x - previous.x) * (now.y - previous.y));
+                    System.out.println(i + "(ccw): "+ ccw);
+
+                    if (ccw > 200) { pathDirection.add("right"); }
+                    else if (ccw < -200) { pathDirection.add("left"); }
+                    else { pathDirection.add("way"); }  // ccw == 0
+                    // ccw는 원래 0을 기준으로 나누지만 거의 직선이면 방향 지시를 안하기 위해 보정값으로 200을 넣음
+                }
+            }
+
+            // 3. 목적지 노드
+            if (isElevatorNode(pathIndex.size()-1) && isElevatorNode(pathIndex.size()-2)) {
+                pathDirection.add("elevator"); // 나&이전이 엘베면 난 엘베이자 마지막 노드
+            }
+            else { pathDirection.add("destination"); }
+
+        }
+        else {  // 엄청 가까운 거리여서 path가 2개 이하일 때 처리
+            switch (pathPoint.size()) {
+                case 0:
+                    Log.d("path", "path not found");
+                    break;
+                case 1:
+                    pathDirection.add("destination");
+                    break;
+                case 2:
+                    pathDirection.add("way");
+                    pathDirection.add("destination");
+            }
+        }
+
+        // 테스트
+        System.out.println("---pathDirection---");
+        for (String str : pathDirection) {
+            System.out.println(str);
+        }
+        System.out.println("-------------------");
+
+        setPathOnEachFloor();
+    }
+
+    // divide pathPoint array by each floor. (to draw separately)
+    public void setPathOnEachFloor() {
+
+        boolean isDivided = false;
+
+        for (int i = 0; i < pathDirection.size(); i++) {
+            if (pathDirection.get(i).equals("endOfFloor")) {    // divide based on "endOfFloor"
+                isDivided = true;
+                if (pathIndex.get(i) < 49) {    // 출발지가 4층, 목적지가 5층
+                    for (int j = 0; j <= i; j++) {
+                        pathOfFloor4.add(pathPoint.get(j));  // 4층
+                    }
+                    for (int k = i + 1; k < pathDirection.size(); k++) {
+                        pathOfFloor5.add(pathPoint.get(k)); // 5층
+                    }
+                }
+                else {  // 출발지가 5층, 목적지가 4층
+                    for (int j = 0; j <= i; j++) {
+                        pathOfFloor5.add(pathPoint.get(j));  // 5층
+                    }
+                    for (int k = i; k < pathDirection.size(); k++) {
+                        pathOfFloor4.add(pathPoint.get(k)); // 4층
+                    }
+                }
+            }
+        }
+
+        if (!isDivided) {   // 출발지와 목적지의 층이 같을 때
+            if (pathIndex.get(0) < 49) {    // 4층
+                for (Point tmp : pathPoint) {
+                    pathOfFloor4.add(tmp);
+                }
+            }
+            else {  // 5층
+                for (Point tmp : pathPoint) {
+                    pathOfFloor5.add(tmp);
+                }
+            }
+        }
+    }
+
+    public boolean isElevatorNode(int index) {
+        int[] elevatorIndexList = {11, 17, 20, 25, 31, 42, 43, 48,
+                57, 66, 69, 80, 88, 89, 94};    // 계단/엘베 파악용으로 쓸 index array
+
+        boolean isElev = false;
+        for (int i : elevatorIndexList) {
+            if (pathIndex.get(index) == i) {
+                isElev = true;
+            }
+        }
+
+        return isElev;
+    }
+
 
     public static ArrayList<ReferencePointDTO> getRpList() {
         return rpList;
     }
 
-    public ArrayList<Integer> getPath() {
-        return path;
+    public ArrayList<Point> getPathOfFloor4() {
+        return pathOfFloor4;
+    }
+
+    public ArrayList<Point> getPathOfFloor5() {
+        return pathOfFloor5;
     }
 
     public int rpToIndex(String rp) {
