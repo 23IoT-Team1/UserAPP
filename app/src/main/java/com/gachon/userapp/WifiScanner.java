@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -76,7 +75,7 @@ public class WifiScanner {
         return wifiReceiver;
     }
 
-    public final BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
+        public final BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("wifiReceiver 리턴 후 시작","wifiReceiver 리턴 후 시작");
@@ -108,10 +107,22 @@ public class WifiScanner {
                     break; // Break the loop once 5 values have been added
                 }
             }
-
             SenderToServer sender = new SenderToServer(arrayList);
-            GetLocationActivity GLA = new GetLocationActivity();
-            GLA.set_rpValue(sender.send());
+
+            if (ActivityStatusChecker.isActivityAlive()) {
+                GetLocationActivity GLA = new GetLocationActivity();
+                GLA.set_rpValue(sender.send()+"GLA 입니다.");
+            } else {
+                NavigationActivity NA = new NavigationActivity();
+                NA.set_rpValue(sender.send()+"NA 입니다.");
+            }
+
         }
     };
+    public void stopWifiScan() {
+        if (wifiReceiver != null) {
+            context.unregisterReceiver(wifiReceiver);
+        }
+
+    }
 }

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public class GetLocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_location);
+        ActivityStatusChecker.setActivityStatus(true);
 
         imageView = findViewById(R.id.imageView);
         textView_RP = findViewById(R.id.textView_RP);
@@ -49,7 +51,7 @@ public class GetLocationActivity extends AppCompatActivity {
 
 
         wifiScanner = new WifiScanner(this, (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), new ArrayList<>());
-        registerReceiver(wifiScanner.getWifiReceiver(), new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        this.registerReceiver(wifiScanner.getWifiReceiver(), new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiScanner.requestPermissions();
         wifiScanner.scanWifi();
 
@@ -77,6 +79,7 @@ public class GetLocationActivity extends AppCompatActivity {
         button_Wrong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 // 현 위치를 유저에게 직접 입력 받는 화면으로 넘어가기
                 Intent intent = new Intent(GetLocationActivity.this, SelectLocationActivity.class);
                 startActivity(intent);
@@ -84,6 +87,14 @@ public class GetLocationActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Set activity status
+        ActivityStatusChecker.setActivityStatus(false);
+        Toast.makeText(this, "onPause 호출됨", Toast.LENGTH_SHORT).show();
+    }
+
     public void set_rpValue(String rpValue) {
         this.rpValue = rpValue;
         Log.d("제발제발제발제발", this.rpValue);

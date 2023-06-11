@@ -3,10 +3,14 @@ package com.gachon.userapp;
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Point;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -18,6 +22,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NavigationActivity extends AppCompatActivity {
 
@@ -250,11 +256,47 @@ public class NavigationActivity extends AppCompatActivity {
             }
         });
 
+        // Initialize the WifiScanner instance
+        wifiScanner = new WifiScanner(this, (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), new ArrayList<>());
+        // Create a handler to schedule the Wi-Fi scan periodically
+        handler = new Handler();
+
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        // Start the periodic Wi-Fi scanning
+        startWifiScan();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+        // Stop the timer when the activity is stopped
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+    public void set_rpValue(String rpValue) {
+        this.rpValue = rpValue;
+        Log.d("제발제발제발제발이건 네비게이션네비게이션", this.rpValue);
+    }
     // declaration
+    private void startWifiScan() {
+        // Schedule the Wi-Fi scan periodically
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Start the Wi-Fi scan
+                wifiScanner.scanWifi();
 
+                // Schedule the next Wi-Fi scan after the specified interval
+                handler.postDelayed(this, 5000);
+            }
+        }, 5000);
+    }
     private ImageView imageView;
     private FrameLayout canvasViewFrame;
     private CanvasView canvasView;
@@ -272,5 +314,10 @@ public class NavigationActivity extends AppCompatActivity {
     private TextView textView_LeftToDestination;
     private LinearLayout layout_LeftToDestination;
     private Button button_BackToMain;
+    private Timer timer;
+    private WifiScanner wifiScanner2;
+    public static String rpValue;
+    private Handler handler;
+    private WifiScanner wifiScanner;
 
 }

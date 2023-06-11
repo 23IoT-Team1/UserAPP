@@ -17,6 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UserAPP"
         tools:targetApi="31">
+        <service
+            android:name=".Scaning"
+            android:exported="false"></service>
+        <service
+            android:name=".scaning"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".NavigationActivity"
             android:exported="false" />
