@@ -36,10 +36,10 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="8dp"
-                    android:src="@drawable/d_right"
+                    android:src="@drawable/d_destination"
                     />
                 <TextView
-                    android:id="@+id/textView_DistanceToChangePoint"
+                    android:id="@+id/textView_LeftToChangePoint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/imageView_direction"
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@id/textView_ChangePointPlace"
-                    android:layout_alignLeft="@id/textView_DistanceToChangePoint"
+                    android:layout_alignLeft="@id/textView_LeftToChangePoint"
                     android:text="Turn right at "
                     android:textSize="16sp"
                     />
@@ -129,16 +129,16 @@
 
                 <ImageView
                     android:id="@+id/currentLocationPin"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:src="@drawable/pin_cur"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/arrow"
                     android:visibility="invisible"
                     />
 
                 <ImageView
                     android:id="@+id/destinationPin"
-                    android:layout_width="12dp"
-                    android:layout_height="15dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/pin_des"
                     android:visibility="invisible"
                     />
@@ -187,11 +187,12 @@
                         android:paddingBottom="6dp">
 
                         <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginRight="6dp"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="7dp"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/pin_cur"
+                            android:src="@drawable/arrow"
                             />
 
                         <TextView
@@ -238,16 +239,42 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal"
+                    android:background="@drawable/distance_background">
+                    <TextView
+                        android:id="@+id/textView_LeftToDestination"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="10m"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/ubuntu_medium"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text=" left"
+                        />
+                </LinearLayout>
+
                 <Button
-                    android:id="@+id/button_Navigate"
+                    android:id="@+id/button_BackToMain"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="Navigate "
-                    android:drawableRight="@drawable/arrow_size"
+                    android:text="Back To Main "
                     android:background="@drawable/button_background"
                     android:elevation="8dp"
+                    android:visibility="gone"
                     />
 
             </RelativeLayout>

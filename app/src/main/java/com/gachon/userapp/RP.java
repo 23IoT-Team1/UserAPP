@@ -102,9 +102,6 @@ public class RP {
             }
             pathIndex.add(endNode);
         }
-
-        setDirectionList();
-
     }
 
     // set direction list to guide
@@ -178,8 +175,6 @@ public class RP {
             System.out.println(str);
         }
         System.out.println("-------------------");
-
-        setPathOnEachFloor();
     }
 
     // divide pathPoint array by each floor. (to draw separately)
@@ -241,11 +236,13 @@ public class RP {
     public static ArrayList<ReferencePointDTO> getRpList() {
         return rpList;
     }
-
+    public ArrayList<Integer> getPathIndex() { return pathIndex; }
+    public ArrayList<String> getPathDirection() {
+        return pathDirection;
+    }
     public ArrayList<Point> getPathOfFloor4() {
         return pathOfFloor4;
     }
-
     public ArrayList<Point> getPathOfFloor5() {
         return pathOfFloor5;
     }

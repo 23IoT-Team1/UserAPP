@@ -42,7 +42,7 @@ public class CanvasView extends View {
         // paint 기본 설정
         paint.setStrokeWidth(9f);
         paint.setStyle(Paint.Style.STROKE);
-
+        // 무지개색 넣을 거면 pathOfFloor4와 pathOfFloor5의 size를 비율로 비교해서 넣어주기
 
     }
 
@@ -53,6 +53,10 @@ public class CanvasView extends View {
 
             Path path4 = new Path();
             paint.setColor(Color.rgb(255, 114, 86));  // 코랄
+
+            if (pathOfFloor4.size() == 1) {
+                canvas.drawCircle(pathOfFloor4.get(0).x / view_scale * density, pathOfFloor4.get(0).y / view_scale * density, 3f, paint);
+            }
 
             if (pathOfFloor4.size() > 1) {
 
@@ -72,6 +76,10 @@ public class CanvasView extends View {
         else {  // 5층 보여줄 때
             Path path5 = new Path();
             paint.setColor(Color.rgb(114, 225, 86));  // 다른 색 테스트
+
+            if (pathOfFloor5.size() == 1) {
+                canvas.drawCircle(pathOfFloor5.get(0).x / view_scale * density, pathOfFloor5.get(0).y / view_scale * density, 3f, paint);
+            }
 
             if (pathOfFloor5.size() > 1) {
 
