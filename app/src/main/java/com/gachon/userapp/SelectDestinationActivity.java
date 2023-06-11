@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.renderscript.Script;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,10 +56,10 @@ public class SelectDestinationActivity extends AppCompatActivity {
 //        System.out.println("viewScale " + view_scale);
         // current location 관련 정보 초기화
         textView_Current.setText(currentPlace);
-        for (int i = 0; i < rp.getRpList().size(); i++) {
-            if (rp.getRpList().get(i).getRp().equals(currentRP)) {
-                int x = rp.getRpList().get(i).getX();
-                int y = rp.getRpList().get(i).getY();
+        for (int i = 0; i < RP.getRpList().size(); i++) {
+            if (RP.getRpList().get(i).getRp().equals(currentRP)) {
+                int x = RP.getRpList().get(i).getX();
+                int y = RP.getRpList().get(i).getY();
                 // 맵핀 위치 바꾸기
                 currentLocationPin.setVisibility(View.VISIBLE);
                 currentLocationPin.setX((x / view_scale - CURRENT_PIN_SIZE_HALF) * density);
@@ -117,6 +116,11 @@ public class SelectDestinationActivity extends AppCompatActivity {
                 destinationPlace = spinner_RP.getSelectedItem().toString();
                 textView_Destination.setText(destinationPlace);  // 텍스트뷰에 세팅
 
+                // nearby 버튼이 선택되어 있었다면 pressed UI를 원래대로 돌리기
+                button_nearby_man.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_woman.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_stair.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_elev.setBackground(getDrawable(R.drawable.small_button_background));
                 imageView_NearbyIcon.setVisibility(View.INVISIBLE); // nearby icon 숨기기
 
                 String tempRP = "";
@@ -149,9 +153,9 @@ public class SelectDestinationActivity extends AppCompatActivity {
                         else if (tempFloor.equals("5F")) { tempRP = "5_46"; }
                         break;
                     default:
-                        for (int i = 0; i < rp.getRpList().size(); i++) {
-                            if (rp.getRpList().get(i).getPlace().equals(destinationPlace)) {
-                                tempRP = rp.getRpList().get(i).getRp();
+                        for (int i = 0; i < RP.getRpList().size(); i++) {
+                            if (RP.getRpList().get(i).getPlace().equals(destinationPlace)) {
+                                tempRP = RP.getRpList().get(i).getRp();
                             }
                         }
                         break;
@@ -161,10 +165,10 @@ public class SelectDestinationActivity extends AppCompatActivity {
                 int x = 0;
                 int y = 0;
                 // destination맵핀 표시를 위한 좌표 받아오기
-                for (int i = 0; i < rp.getRpList().size(); i++) {
-                    if (rp.getRpList().get(i).getRp().equals(tempRP)) {
-                        x = rp.getRpList().get(i).getX();
-                        y = rp.getRpList().get(i).getY();
+                for (int i = 0; i < RP.getRpList().size(); i++) {
+                    if (RP.getRpList().get(i).getRp().equals(tempRP)) {
+                        x = RP.getRpList().get(i).getX();
+                        y = RP.getRpList().get(i).getY();
                     }
                 }
 
@@ -237,22 +241,28 @@ public class SelectDestinationActivity extends AppCompatActivity {
                         minIndex = i;
                     }
                 }
-                destinationPlace = rp.getRpList().get(minIndex).getPlace();
-                destinationRP = rp.getRpList().get(minIndex).getRp();
+                destinationPlace = RP.getRpList().get(minIndex).getPlace();
+                destinationRP = RP.getRpList().get(minIndex).getRp();
 
                 // 목적지 맵핀 위치 변경
-                int x = rp.getRpList().get(minIndex).getX();
-                int y = rp.getRpList().get(minIndex).getY();
+                int x = RP.getRpList().get(minIndex).getX();
+                int y = RP.getRpList().get(minIndex).getY();
                 destinationPin.setX((x / view_scale - CURRENT_PIN_SIZE_HALF) * density);
                 destinationPin.setY((y / view_scale - 15) * density);
 
                 // 보이는 층 바뀌게
-                if (spinner_Floor.getSelectedItem().equals("4F") && minIndex >= 49) {
+                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) && minIndex >= 49) {
                     radioButton_5F.setChecked(true);
                 }
-                else if (spinner_Floor.getSelectedItem().equals("5F") && minIndex < 49) {
+                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) && minIndex < 49) {
                     radioButton_4F.setChecked(true);
                 }
+
+                // 버튼 선택된 게 티나도록 UI 설정
+                button_nearby_man.setBackground(getDrawable(R.drawable.small_button_pressed));
+                button_nearby_woman.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_stair.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_elev.setBackground(getDrawable(R.drawable.small_button_background));
             }
         });
 
@@ -276,22 +286,28 @@ public class SelectDestinationActivity extends AppCompatActivity {
                         minIndex = i;
                     }
                 }
-                destinationPlace = rp.getRpList().get(minIndex).getPlace();
-                destinationRP = rp.getRpList().get(minIndex).getRp();
+                destinationPlace = RP.getRpList().get(minIndex).getPlace();
+                destinationRP = RP.getRpList().get(minIndex).getRp();
 
                 // 목적지 맵핀 위치 변경
-                int x = rp.getRpList().get(minIndex).getX();
-                int y = rp.getRpList().get(minIndex).getY();
+                int x = RP.getRpList().get(minIndex).getX();
+                int y = RP.getRpList().get(minIndex).getY();
                 destinationPin.setX((x / view_scale - CURRENT_PIN_SIZE_HALF) * density);
                 destinationPin.setY((y / view_scale - 15) * density);
 
                 // 보이는 층 바뀌게
-                if (spinner_Floor.getSelectedItem().equals("4F") && minIndex >= 49) {
+                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) && minIndex >= 49) {
                     radioButton_5F.setChecked(true);
                 }
-                else if (spinner_Floor.getSelectedItem().equals("5F") && minIndex < 49) {
+                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) && minIndex < 49) {
                     radioButton_4F.setChecked(true);
                 }
+
+                // 버튼 선택된 게 티나도록 UI 설정
+                button_nearby_woman.setBackground(getDrawable(R.drawable.small_button_pressed));
+                button_nearby_man.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_stair.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_elev.setBackground(getDrawable(R.drawable.small_button_background));
             }
         });
 
@@ -314,22 +330,28 @@ public class SelectDestinationActivity extends AppCompatActivity {
                         minIndex = i;
                     }
                 }
-                destinationPlace = rp.getRpList().get(minIndex).getPlace();
-                destinationRP = rp.getRpList().get(minIndex).getRp();
+                destinationPlace = RP.getRpList().get(minIndex).getPlace();
+                destinationRP = RP.getRpList().get(minIndex).getRp();
 
                 // 목적지 맵핀 위치 변경
-                int x = rp.getRpList().get(minIndex).getX();
-                int y = rp.getRpList().get(minIndex).getY();
+                int x = RP.getRpList().get(minIndex).getX();
+                int y = RP.getRpList().get(minIndex).getY();
                 destinationPin.setX((x / view_scale - CURRENT_PIN_SIZE_HALF) * density);
                 destinationPin.setY((y / view_scale - 15) * density);
 
                 // 보이는 층 바뀌게
-                if (spinner_Floor.getSelectedItem().equals("4F") && minIndex >= 49) {
+                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) && minIndex >= 49) {
                     radioButton_5F.setChecked(true);
                 }
-                else if (spinner_Floor.getSelectedItem().equals("5F") && minIndex < 49) {
+                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) && minIndex < 49) {
                     radioButton_4F.setChecked(true);
                 }
+
+                // 버튼 선택된 게 티나도록 UI 설정
+                button_nearby_stair.setBackground(getDrawable(R.drawable.small_button_pressed));
+                button_nearby_man.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_woman.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_elev.setBackground(getDrawable(R.drawable.small_button_background));
             }
         });
 
@@ -352,22 +374,28 @@ public class SelectDestinationActivity extends AppCompatActivity {
                         minIndex = i;
                     }
                 }
-                destinationPlace = rp.getRpList().get(minIndex).getPlace();
-                destinationRP = rp.getRpList().get(minIndex).getRp();
+                destinationPlace = RP.getRpList().get(minIndex).getPlace();
+                destinationRP = RP.getRpList().get(minIndex).getRp();
 
                 // 목적지 맵핀 위치 변경
-                int x = rp.getRpList().get(minIndex).getX();
-                int y = rp.getRpList().get(minIndex).getY();
+                int x = RP.getRpList().get(minIndex).getX();
+                int y = RP.getRpList().get(minIndex).getY();
                 destinationPin.setX((x / view_scale - CURRENT_PIN_SIZE_HALF) * density);
                 destinationPin.setY((y / view_scale - 15) * density);
 
                 // 보이는 층 바뀌게
-                if (spinner_Floor.getSelectedItem().equals("4F") && minIndex >= 49) {
+                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) && minIndex >= 49) {
                     radioButton_5F.setChecked(true);
                 }
-                else if (spinner_Floor.getSelectedItem().equals("5F") && minIndex < 49) {
+                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) && minIndex < 49) {
                     radioButton_4F.setChecked(true);
                 }
+
+                // 버튼 선택된 게 티나도록 UI 설정
+                button_nearby_elev.setBackground(getDrawable(R.drawable.small_button_pressed));
+                button_nearby_man.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_woman.setBackground(getDrawable(R.drawable.small_button_background));
+                button_nearby_stair.setBackground(getDrawable(R.drawable.small_button_background));
             }
         });
 
