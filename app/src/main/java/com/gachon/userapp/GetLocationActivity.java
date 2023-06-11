@@ -3,14 +3,18 @@ package com.gachon.userapp;
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class GetLocationActivity extends AppCompatActivity {
 
@@ -40,6 +46,12 @@ public class GetLocationActivity extends AppCompatActivity {
         // 받아와서 imageView도 그 층에 맞는 걸로 바꿔주기
         // 그 후 rp에 따른 좌표에 맵핀을 표시해주기
         // rp는 저장해서 intent로 넘겨줘야 함
+
+
+        wifiScanner = new WifiScanner(this, (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), new ArrayList<>());
+        registerReceiver(wifiScanner.getWifiReceiver(), new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        wifiScanner.requestPermissions();
+        wifiScanner.scanWifi();
 
 
         // 현 위치 다시 인식하는 버튼
@@ -72,12 +84,17 @@ public class GetLocationActivity extends AppCompatActivity {
             }
         });
     }
-    
+    public void set_rpValue(String rpValue) {
+        this.rpValue = rpValue;
+        Log.d("제발제발제발제발", this.rpValue);
+    }
     // declaration
     private ImageView imageView;
     private TextView textView_RP;
     private Button button_Retry;
     private Button button_Right;
     private Button button_Wrong;
+    private WifiScanner wifiScanner;
+    public static String rpValue;
 
 }
