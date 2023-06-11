@@ -69,8 +69,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingTop="30dp"
-                android:paddingBottom="12dp">
+                android:paddingTop="20dp"
+                android:paddingBottom="2dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -86,11 +86,16 @@
 
                 <Button
                     android:id="@+id/button_Retry"
-                    android:layout_width="wrap_content"
+                    android:layout_width="64dp"
                     android:layout_height="28dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/button_background"
-                    android:elevation="8dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginBottom="11dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/small_button_background"
+                    android:drawablePadding="0dp"
+                    android:drawableLeft="@drawable/retry_size"
+                    android:elevation="0dp"
                     android:text="Retry"
                     android:textSize="12sp" />
 

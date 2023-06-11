@@ -14,6 +14,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class NavigationActivity extends AppCompatActivity {
         textView_Direction = findViewById(R.id.textView_Direction);
         textView_ChangePointPlace = findViewById(R.id.textView_ChangePointPlace);
         textView_LeftToDestination = findViewById(R.id.textView_LeftToDestination);
+        layout_LeftToDestination = findViewById(R.id.layout_LeftToDestination);
         button_BackToMain = findViewById(R.id.button_BackToMain);
 
         // Get Intent (rp of current location)
@@ -164,8 +166,8 @@ public class NavigationActivity extends AppCompatActivity {
             textView_Direction.setText("at " + destinationPlace);
             textView_ChangePointPlace.setText("");
             
-            // 남은 거리 textView를 안보이게 하고, BackToMain 버튼을 보이게 하기
-            textView_LeftToDestination.setVisibility(View.GONE);
+            // 남은 거리 textView(layout)를 안보이게 하고, BackToMain 버튼을 보이게 하기
+            layout_LeftToDestination.setVisibility(View.GONE);
             button_BackToMain.setVisibility(View.VISIBLE);
         }
         else {
@@ -189,8 +191,8 @@ public class NavigationActivity extends AppCompatActivity {
             textView_LeftToDestination.setText(weightToDestination + "m");  // 목적지까지 거리 먼저 세팅
 
             // 혹시 모를 visability 세팅
-            // 남은 거리 textView를 보이게 하고, BackToMain 버튼을 안보이게 하기
-            textView_LeftToDestination.setVisibility(View.VISIBLE);
+            // 남은 거리 textView(layout)를 보이게 하고, BackToMain 버튼을 안보이게 하기
+            layout_LeftToDestination.setVisibility(View.VISIBLE);
             button_BackToMain.setVisibility(View.GONE);
             
             // case에 따라 처리
@@ -229,14 +231,17 @@ public class NavigationActivity extends AppCompatActivity {
                         textView_LeftToChangePoint.setText("Go up");
                         textView_Direction.setText("to the 5th floor");
                         textView_ChangePointPlace.setText("");
-                        break;
                     }
+                    break;
             }
         }
 
         button_BackToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // rp에 있는 arraylist들 초기화
+                rp.clearArrayLists();
+
                 // main 화면으로 이동
                 Intent intent = new Intent(NavigationActivity.this, HomeActivity.class);
                 startActivity(intent);
@@ -264,6 +269,7 @@ public class NavigationActivity extends AppCompatActivity {
     private TextView textView_Direction;
     private TextView textView_ChangePointPlace;
     private TextView textView_LeftToDestination;
+    private LinearLayout layout_LeftToDestination;
     private Button button_BackToMain;
 
 }

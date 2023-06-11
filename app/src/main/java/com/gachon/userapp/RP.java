@@ -51,6 +51,11 @@ public class RP {
 
         System.out.println("startNode: " + startNode + "  endNode: " + endNode);
 
+        if (startNode == endNode) { // 예외 처리
+            pathIndex.add(startNode);
+            return 0;
+        }
+
         for (int i = 0; i < numNodes - 1; i++) {
             int minDistanceNode = getMinDistanceNode(distance, visited);
             visited[minDistanceNode] = true;
@@ -91,6 +96,8 @@ public class RP {
 
     public void logShortestPath(int startNode, int endNode, int[] previous) {
 
+        if (pathIndex.size() > 0) { pathIndex.clear(); }    // 초기화
+        
         if (previous[endNode] == -1) {
             Log.d("dijkstra", "No path found.");
         } else {
@@ -164,8 +171,15 @@ public class RP {
                     pathDirection.add("destination");
                     break;
                 case 2:
-                    pathDirection.add("way");
-                    pathDirection.add("destination");
+                    if (isElevatorNode(0) && isElevatorNode(1)) {
+                        pathDirection.add("endOfFloor"); // 둘밖에 없는데 둘다 엘베인 어이 없는 길찾기 상황
+                        pathDirection.add("elevator");  // 테스트하다 이 예외를 발견한 게 더 웃김
+                    }
+                    else {
+                        pathDirection.add("way");
+                        pathDirection.add("destination");
+                    }
+                    break;
             }
         }
 
@@ -219,7 +233,7 @@ public class RP {
     }
 
     public boolean isElevatorNode(int index) {
-        int[] elevatorIndexList = {11, 17, 20, 25, 31, 42, 43, 48,
+        int[] elevatorIndexList = {11, 17, 20, 31, 42, 43, 48,
                 57, 66, 69, 80, 88, 89, 94};    // 계단/엘베 파악용으로 쓸 index array
 
         boolean isElev = false;
@@ -231,6 +245,15 @@ public class RP {
 
         return isElev;
     }
+
+    public void clearArrayLists() {
+        pathIndex.clear();
+        pathPoint.clear();
+        pathDirection.clear();
+        pathOfFloor4.clear();
+        pathOfFloor5.clear();
+    }
+
 
 
     public static ArrayList<ReferencePointDTO> getRpList() {

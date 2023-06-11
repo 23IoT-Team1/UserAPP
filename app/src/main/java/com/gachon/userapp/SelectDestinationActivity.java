@@ -42,6 +42,11 @@ public class SelectDestinationActivity extends AppCompatActivity {
         textView_Current = findViewById(R.id.textView_Current);
         textView_Destination = findViewById(R.id.textView_Destination);
         button_Navigate = findViewById(R.id.button_Navigate);
+        button_nearby_man = findViewById(R.id.button_nearby_man);
+        button_nearby_woman = findViewById(R.id.button_nearby_woman);
+        button_nearby_stair = findViewById(R.id.button_nearby_stair);
+        button_nearby_elev = findViewById(R.id.button_nearby_elev);
+        imageView_NearbyIcon = findViewById(R.id.imageView_NearbyIcon);
         float density = getResources().getDisplayMetrics().density;
 
         // Get Intent (rp of current location)
@@ -111,6 +116,8 @@ public class SelectDestinationActivity extends AppCompatActivity {
                 // 선택한 string 값 받아오기
                 destinationPlace = spinner_RP.getSelectedItem().toString();
                 textView_Destination.setText(destinationPlace);  // 텍스트뷰에 세팅
+
+                imageView_NearbyIcon.setVisibility(View.INVISIBLE); // nearby icon 숨기기
 
                 String tempRP = "";
                 String tempFloor = spinner_Floor.getSelectedItem().toString();
@@ -210,6 +217,160 @@ public class SelectDestinationActivity extends AppCompatActivity {
             }
         });
 
+        // 가장 가까운 남자화장실로 목적지를 설정하는 버튼
+        button_nearby_man.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                textView_Destination.setText("nearby");  // 텍스트뷰에 세팅
+                imageView_NearbyIcon.setImageResource(R.drawable.nearby_man);
+                imageView_NearbyIcon.setVisibility(View.VISIBLE); // nearby icon 보이게 하기
+
+                // 가장 가까운 목적지 찾아서 destination rp, place에 저장
+                int[] man = {3, 19, 51, 68};
+                int minIndex = 0;
+                double min = Double.POSITIVE_INFINITY;
+                for (int i : man) {
+                    double distance = rp.dijkstra(rp.rpToIndex(currentRP), i);
+                    if (distance < min) {
+                        min = distance;
+                        minIndex = i;
+                    }
+                }
+                destinationPlace = rp.getRpList().get(minIndex).getPlace();
+                destinationRP = rp.getRpList().get(minIndex).getRp();
+
+                // 목적지 맵핀 위치 변경
+                int x = rp.getRpList().get(minIndex).getX();
+                int y = rp.getRpList().get(minIndex).getY();
+                destinationPin.setX((x / view_scale - CURRENT_PIN_SIZE_HALF) * density);
+                destinationPin.setY((y / view_scale - 15) * density);
+
+                // 보이는 층 바뀌게
+                if (spinner_Floor.getSelectedItem().equals("4F") && minIndex >= 49) {
+                    radioButton_5F.setChecked(true);
+                }
+                else if (spinner_Floor.getSelectedItem().equals("5F") && minIndex < 49) {
+                    radioButton_4F.setChecked(true);
+                }
+            }
+        });
+
+        // 가장 가까운 여자화장실로 목적지를 설정하는 버튼
+        button_nearby_woman.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                textView_Destination.setText("nearby");  // 텍스트뷰에 세팅
+                imageView_NearbyIcon.setImageResource(R.drawable.nearby_woman);
+                imageView_NearbyIcon.setVisibility(View.VISIBLE); // nearby icon 보이게 하기
+
+                // 가장 가까운 목적지 찾아서 destination rp, place에 저장
+                int[] woman = {37, 20, 84, 69};
+                int minIndex = 0;
+                double min = Double.POSITIVE_INFINITY;
+                for (int i : woman) {
+                    double distance = rp.dijkstra(rp.rpToIndex(currentRP), i);
+                    if (distance < min) {
+                        min = distance;
+                        minIndex = i;
+                    }
+                }
+                destinationPlace = rp.getRpList().get(minIndex).getPlace();
+                destinationRP = rp.getRpList().get(minIndex).getRp();
+
+                // 목적지 맵핀 위치 변경
+                int x = rp.getRpList().get(minIndex).getX();
+                int y = rp.getRpList().get(minIndex).getY();
+                destinationPin.setX((x / view_scale - CURRENT_PIN_SIZE_HALF) * density);
+                destinationPin.setY((y / view_scale - 15) * density);
+
+                // 보이는 층 바뀌게
+                if (spinner_Floor.getSelectedItem().equals("4F") && minIndex >= 49) {
+                    radioButton_5F.setChecked(true);
+                }
+                else if (spinner_Floor.getSelectedItem().equals("5F") && minIndex < 49) {
+                    radioButton_4F.setChecked(true);
+                }
+            }
+        });
+
+        button_nearby_stair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                textView_Destination.setText("nearby ");  // 텍스트뷰에 세팅
+                imageView_NearbyIcon.setImageResource(R.drawable.nearby_stair);
+                imageView_NearbyIcon.setVisibility(View.VISIBLE); // nearby icon 보이게 하기
+
+                // 가장 가까운 목적지 찾아서 destination rp, place에 저장
+                int[] stair = {11, 17, 20, 31, 42, 57, 66, 69, 80, 88};
+                int minIndex = 0;
+                double min = Double.POSITIVE_INFINITY;
+                for (int i : stair) {
+                    double distance = rp.dijkstra(rp.rpToIndex(currentRP), i);
+                    if (distance < min) {
+                        min = distance;
+                        minIndex = i;
+                    }
+                }
+                destinationPlace = rp.getRpList().get(minIndex).getPlace();
+                destinationRP = rp.getRpList().get(minIndex).getRp();
+
+                // 목적지 맵핀 위치 변경
+                int x = rp.getRpList().get(minIndex).getX();
+                int y = rp.getRpList().get(minIndex).getY();
+                destinationPin.setX((x / view_scale - CURRENT_PIN_SIZE_HALF) * density);
+                destinationPin.setY((y / view_scale - 15) * density);
+
+                // 보이는 층 바뀌게
+                if (spinner_Floor.getSelectedItem().equals("4F") && minIndex >= 49) {
+                    radioButton_5F.setChecked(true);
+                }
+                else if (spinner_Floor.getSelectedItem().equals("5F") && minIndex < 49) {
+                    radioButton_4F.setChecked(true);
+                }
+            }
+        });
+
+        button_nearby_elev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                textView_Destination.setText("nearby ");  // 텍스트뷰에 세팅
+                imageView_NearbyIcon.setImageResource(R.drawable.nearby_elev);
+                imageView_NearbyIcon.setVisibility(View.VISIBLE); // nearby icon 보이게 하기
+
+                // 가장 가까운 목적지 찾아서 destination rp, place에 저장
+                int[] elev = {42, 43, 48, 88, 89, 94};
+                int minIndex = 0;
+                double min = Double.POSITIVE_INFINITY;
+                for (int i : elev) {
+                    double distance = rp.dijkstra(rp.rpToIndex(currentRP), i);
+                    if (distance < min) {
+                        min = distance;
+                        minIndex = i;
+                    }
+                }
+                destinationPlace = rp.getRpList().get(minIndex).getPlace();
+                destinationRP = rp.getRpList().get(minIndex).getRp();
+
+                // 목적지 맵핀 위치 변경
+                int x = rp.getRpList().get(minIndex).getX();
+                int y = rp.getRpList().get(minIndex).getY();
+                destinationPin.setX((x / view_scale - CURRENT_PIN_SIZE_HALF) * density);
+                destinationPin.setY((y / view_scale - 15) * density);
+
+                // 보이는 층 바뀌게
+                if (spinner_Floor.getSelectedItem().equals("4F") && minIndex >= 49) {
+                    radioButton_5F.setChecked(true);
+                }
+                else if (spinner_Floor.getSelectedItem().equals("5F") && minIndex < 49) {
+                    radioButton_4F.setChecked(true);
+                }
+            }
+        });
+
     }
 
     // declaration
@@ -228,4 +389,10 @@ public class SelectDestinationActivity extends AppCompatActivity {
     private ArrayAdapter floorAdapter;
     private ArrayAdapter rp4Adapter;
     private ArrayAdapter rp5Adapter;
+
+    private Button button_nearby_man;
+    private Button button_nearby_woman;
+    private Button button_nearby_stair;
+    private Button button_nearby_elev;
+    private ImageView imageView_NearbyIcon;
 }
