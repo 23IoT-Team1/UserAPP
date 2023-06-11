@@ -3,12 +3,11 @@ package com.gachon.userapp;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
-import android.util.Log;
+import android.graphics.Shader;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,32 +17,53 @@ public class CanvasView extends View {
     float density = getResources().getDisplayMetrics().density;
     public boolean isFloor4;   // 층에따라 다른 경로 보여주기
     float view_scale;
-    private ArrayList<Point> pathOfFloor4;
-    private ArrayList<Point> pathOfFloor5;
+    private ArrayList<Point> pathPoint;
+    private int startFloor;
+    private ArrayList<Integer> pointIndexOf4;
+    private ArrayList<Integer> pointIndexOf5;
+    private int firstColorOf4;
+    private int firstColorOf5;
+    private int lastColorOf4;
+    private int lastColorOf5;
+
+    // 빨주노초파남보핑
+    int[] colors = {Color.rgb(235,107,107), Color.rgb(231,186,61), Color.rgb(102,200,118),
+            Color.rgb(71,199,227), Color.rgb(49,103,208), Color.rgb(126,99,202),
+            Color.rgb(209,106,225)};
 
 
-
-
-    public CanvasView(Context context, float view_scale, ArrayList<Point> pathOfFloor4, ArrayList<Point> pathOfFloor5) {
+    public CanvasView(Context context, float view_scale, ArrayList<Point> pathPoint, int startFloor,
+                      ArrayList<Integer> pointIndexOf4, ArrayList<Integer> pointIndexOf5) {
         super(context);
         this.view_scale = view_scale;
-        this.pathOfFloor4 = pathOfFloor4;
-        this.pathOfFloor5 = pathOfFloor5;
+        this.pathPoint = pathPoint;
+        this.startFloor = startFloor;
+        this.pointIndexOf4 = pointIndexOf4;
+        this.pointIndexOf5 = pointIndexOf5;
+        
+        // color를 구분할 cursor 설정
+        if (startFloor == 4) {  // 4층부터 시작
+            firstColorOf4 = 0;
+            lastColorOf4 = pointIndexOf4.size() - 1;
+            firstColorOf5 = pointIndexOf4.size() - 1;
+            lastColorOf5 = pointIndexOf4.size() + pointIndexOf5.size() - 2;
+        }
+        else {  // 5층부터 시작
+            firstColorOf5 = 0;
+            lastColorOf5 = pointIndexOf5.size() - 1;
+            firstColorOf4 = pointIndexOf5.size() - 1;
+            lastColorOf4 = pointIndexOf5.size() + pointIndexOf4.size() - 2;
+        }
 
-        System.out.println("floor4-----------");
-        for (int i = 0; i < pathOfFloor4.size(); i++) {
-            System.out.println(pathOfFloor4.get(i).x + ", " + pathOfFloor4.get(i).y);
-        }
-        System.out.println("floor5-----------");
-        for (int i = 0; i < pathOfFloor5.size(); i++) {
-            System.out.println(pathOfFloor5.get(i).x + ", " + pathOfFloor5.get(i).y);
-        }
+//        System.out.println("first4 " + firstColorOf4);
+//        System.out.println("last4 " + lastColorOf4);
+//        System.out.println("first5 " + firstColorOf5);
+//        System.out.println("last5 " + lastColorOf5);
 
         // paint 기본 설정
         paint.setStrokeWidth(9f);
         paint.setStyle(Paint.Style.STROKE);
-        // 무지개색 넣을 거면 pathOfFloor4와 pathOfFloor5의 size를 비율로 비교해서 넣어주기
-
+        paint.setAntiAlias(true);
     }
 
     @Override
@@ -51,49 +71,70 @@ public class CanvasView extends View {
 
         if (isFloor4 == true) { // 4층 보여줄 때
 
-            Path path4 = new Path();
-            paint.setColor(Color.rgb(255, 114, 86));  // 코랄
-
-            if (pathOfFloor4.size() == 1) {
-                canvas.drawCircle(pathOfFloor4.get(0).x / view_scale * density, pathOfFloor4.get(0).y / view_scale * density, 3f, paint);
+            if (pointIndexOf4.size() == 1) {
+                paint.setColor(colors[firstColorOf4]);
+                canvas.drawCircle(pathPoint.get(pointIndexOf4.get(0)).x / view_scale * density, pathPoint.get(pointIndexOf4.get(0)).y / view_scale * density, 2f, paint);
             }
+            else if (pointIndexOf4.size() > 1) {
 
-            if (pathOfFloor4.size() > 1) {
+                int index = 0;
+                for (int i = firstColorOf4; i < lastColorOf4; i++) {
 
-                // 처음과 끝 동그라미
-                canvas.drawCircle(pathOfFloor4.get(0).x / view_scale * density, pathOfFloor4.get(0).y / view_scale * density, 3f, paint);
-                canvas.drawCircle(pathOfFloor4.get(pathOfFloor4.size()-1).x / view_scale * density, pathOfFloor4.get(pathOfFloor4.size()-1).y / view_scale * density, 3f, paint);
+                    float x1 = pathPoint.get(pointIndexOf4.get(index)).x / view_scale * density;
+                    float y1 = pathPoint.get(pointIndexOf4.get(index)).y / view_scale * density;
+                    float x2 = pathPoint.get(pointIndexOf4.get(index+1)).x / view_scale * density;
+                    float y2 = pathPoint.get(pointIndexOf4.get(index+1)).y / view_scale * density;
 
-                // 출발지 좌표는 moveTo로 따로 넣어줘야함
-                path4.moveTo(pathOfFloor4.get(0).x / view_scale * density, pathOfFloor4.get(0).y / view_scale * density); // 출발지 좌표
-                // path 저장
-                for (int i = 1; i < pathOfFloor4.size(); i++) {    // 0은 위에서 설정했으니까 1부터
-                    path4.lineTo(pathOfFloor4.get(i).x / view_scale * density, pathOfFloor4.get(i).y / view_scale * density);
+                    // i 동그라미
+                    paint.setColor(colors[i]);
+                    canvas.drawCircle(x1, y1, 1f, paint);
+
+                    // draw gradient line (drawPath 대신)
+                    paint.setShader(new LinearGradient(x1,y1,x2,y2, colors[i], colors[i+1], Shader.TileMode.CLAMP));
+                    canvas.drawLine(x1,y1,x2,y2, paint);
+
+                    index++;
                 }
-                canvas.drawPath(path4, paint);   // draw
+                // 4층의 마지막 동그라미
+                float x = pathPoint.get(pointIndexOf4.get(index)).x / view_scale * density;
+                float y = pathPoint.get(pointIndexOf4.get(index)).y / view_scale * density;
+                paint.setColor(colors[lastColorOf4]);
+                canvas.drawCircle(x, y, 3f, paint);
+
             }
         }
         else {  // 5층 보여줄 때
-            Path path5 = new Path();
-            paint.setColor(Color.rgb(114, 225, 86));  // 다른 색 테스트
 
-            if (pathOfFloor5.size() == 1) {
-                canvas.drawCircle(pathOfFloor5.get(0).x / view_scale * density, pathOfFloor5.get(0).y / view_scale * density, 3f, paint);
+            if (pointIndexOf5.size() == 1) {
+                paint.setColor(colors[firstColorOf5]);
+                canvas.drawCircle(pathPoint.get(pointIndexOf5.get(0)).x / view_scale * density, pathPoint.get(pointIndexOf5.get(0)).y / view_scale * density, 2f, paint);
             }
+            else if (pointIndexOf5.size() > 1) {
 
-            if (pathOfFloor5.size() > 1) {
+                int index = 0;
+                for (int i = firstColorOf5; i < lastColorOf5; i++) {
 
-                // 처음과 끝 동그라미
-                canvas.drawCircle(pathOfFloor5.get(0).x / view_scale * density, pathOfFloor5.get(0).y / view_scale * density, 3f, paint);
-                canvas.drawCircle(pathOfFloor5.get(pathOfFloor5.size()-1).x / view_scale * density, pathOfFloor5.get(pathOfFloor5.size()-1).y / view_scale * density, 3f, paint);
+                    float x1 = pathPoint.get(pointIndexOf5.get(index)).x / view_scale * density;
+                    float y1 = pathPoint.get(pointIndexOf5.get(index)).y / view_scale * density;
+                    float x2 = pathPoint.get(pointIndexOf5.get(index+1)).x / view_scale * density;
+                    float y2 = pathPoint.get(pointIndexOf5.get(index+1)).y / view_scale * density;
 
-                // 출발지 좌표는 moveTo로 따로 넣어줘야함
-                path5.moveTo(pathOfFloor5.get(0).x / view_scale * density, pathOfFloor5.get(0).y / view_scale * density); // 출발지 좌표
-                // path 저장
-                for (int i = 1; i < pathOfFloor5.size(); i++) {    // 0은 위에서 설정했으니까 1부터
-                    path5.lineTo(pathOfFloor5.get(i).x / view_scale * density, pathOfFloor5.get(i).y / view_scale * density);
+                    // i 동그라미
+                    paint.setColor(colors[i]);
+                    canvas.drawCircle(x1, y1, 1f, paint);
+
+                    // draw gradient line (drawPath 대신)
+                    paint.setShader(new LinearGradient(x1,y1,x2,y2, colors[i], colors[i+1], Shader.TileMode.CLAMP));
+                    canvas.drawLine(x1,y1,x2,y2, paint);
+
+                    index++;
                 }
-                canvas.drawPath(path5, paint);   // draw
+                // 5층의 마지막 동그라미
+                float x = pathPoint.get(pointIndexOf5.get(index)).x / view_scale * density;
+                float y = pathPoint.get(pointIndexOf5.get(index)).y / view_scale * density;
+                paint.setColor(colors[lastColorOf5]);
+                canvas.drawCircle(x, y, 3f, paint);
+
             }
         }
     }

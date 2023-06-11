@@ -14,30 +14,12 @@ public class RP {
     private ArrayList<Integer> pathIndex = new ArrayList<>();
     private ArrayList<Point> pathPoint = new ArrayList<>();
     private ArrayList<String> pathDirection = new ArrayList<>();
-    private ArrayList<Point> pathOfFloor4 = new ArrayList<>();
-    private ArrayList<Point> pathOfFloor5 = new ArrayList<>();
+    private int startFloor; // path가 시작되는 층. 무지개색으로 draw하기 위한 변수
+    private ArrayList<Integer> pointIndexOfFloor4 = new ArrayList<>();
+    private ArrayList<Integer> pointIndexOfFloor5 = new ArrayList<>();
 
 
     public RP() {}
-
-//    // 가장 가까운 화장실/계단/엘베 찾아줄 때 쓰려고 데려온 함수
-//    public void findShortestPathToAllExits(int firstIndexOfExitNode) {
-//
-//        int shortestExit = -1;
-//
-//        double min = Double.POSITIVE_INFINITY;
-//        for (int i = firstIndexOfExitNode; i < node.size(); i++) {
-//            double result = findPath.dijkstra(matrix.get(1), node.size(), i);
-//            if (result < min) {
-//                min = result;
-//                shortestExit = i;
-//            }
-//        }
-//
-//        // 가장 짧은 exit을 endNode로 하는 다익스트라를 다시 호출해서 저장되게 하기 (비효율적이지만 돌아는 감)
-//        findPath.dijkstra(matrix.get(1), node.size(), shortestExit);
-//        pathIndex = findPath.getPathIndex();
-//    }
 
     public double dijkstra(int startNode, int endNode) {    // rpList의 index 값으로 돌리기
 
@@ -192,6 +174,7 @@ public class RP {
     }
 
     // divide pathPoint array by each floor. (to draw separately)
+    // store change point to paint rainbow
     public void setPathOnEachFloor() {
 
         boolean isDivided = false;
@@ -200,19 +183,29 @@ public class RP {
             if (pathDirection.get(i).equals("endOfFloor")) {    // divide based on "endOfFloor"
                 isDivided = true;
                 if (pathIndex.get(i) < 49) {    // 출발지가 4층, 목적지가 5층
+                    startFloor = 4;
                     for (int j = 0; j <= i; j++) {
-                        pathOfFloor4.add(pathPoint.get(j));  // 4층
+                        if (j == 0 || !pathDirection.get(j).equals("way")) {
+                            pointIndexOfFloor4.add(j);
+                        }
                     }
                     for (int k = i + 1; k < pathDirection.size(); k++) {
-                        pathOfFloor5.add(pathPoint.get(k)); // 5층
+                        if (!pathDirection.get(k).equals("way")) {
+                            pointIndexOfFloor5.add(k);
+                        }
                     }
                 }
                 else {  // 출발지가 5층, 목적지가 4층
+                    startFloor = 5;
                     for (int j = 0; j <= i; j++) {
-                        pathOfFloor5.add(pathPoint.get(j));  // 5층
+                        if (j == 0 || !pathDirection.get(j).equals("way")) {
+                            pointIndexOfFloor5.add(j);
+                        }
                     }
                     for (int k = i; k < pathDirection.size(); k++) {
-                        pathOfFloor4.add(pathPoint.get(k)); // 4층
+                        if (!pathDirection.get(k).equals("way")) {
+                            pointIndexOfFloor4.add(k);
+                        }
                     }
                 }
             }
@@ -220,13 +213,19 @@ public class RP {
 
         if (!isDivided) {   // 출발지와 목적지의 층이 같을 때
             if (pathIndex.get(0) < 49) {    // 4층
-                for (Point tmp : pathPoint) {
-                    pathOfFloor4.add(tmp);
+                startFloor = 4;
+                for (int i = 0; i < pathDirection.size(); i++) {
+                    if (i == 0 || !pathDirection.get(i).equals("way")) {
+                        pointIndexOfFloor4.add(i);
+                    }
                 }
             }
             else {  // 5층
-                for (Point tmp : pathPoint) {
-                    pathOfFloor5.add(tmp);
+                startFloor = 5;
+                for (int i = 0; i < pathDirection.size(); i++) {
+                    if (i == 0 || !pathDirection.get(i).equals("way")) {
+                        pointIndexOfFloor5.add(i);
+                    }
                 }
             }
         }
@@ -250,8 +249,6 @@ public class RP {
         pathIndex.clear();
         pathPoint.clear();
         pathDirection.clear();
-        pathOfFloor4.clear();
-        pathOfFloor5.clear();
     }
 
 
@@ -260,15 +257,27 @@ public class RP {
         return rpList;
     }
     public ArrayList<Integer> getPathIndex() { return pathIndex; }
+
     public ArrayList<String> getPathDirection() {
         return pathDirection;
     }
-    public ArrayList<Point> getPathOfFloor4() {
-        return pathOfFloor4;
+
+    public ArrayList<Point> getPathPoint() {
+        return pathPoint;
     }
-    public ArrayList<Point> getPathOfFloor5() {
-        return pathOfFloor5;
+
+    public int getStartFloor() {
+        return startFloor;
     }
+
+    public ArrayList<Integer> getPointIndexOfFloor4() {
+        return pointIndexOfFloor4;
+    }
+
+    public ArrayList<Integer> getPointIndexOfFloor5() {
+        return pointIndexOfFloor5;
+    }
+
 
     public int rpToIndex(String rp) {
         int index = 0;

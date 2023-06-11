@@ -3,9 +3,7 @@ package com.gachon.userapp;
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
@@ -90,9 +88,12 @@ public class NavigationActivity extends AppCompatActivity {
             public void run()
             {
                 // add canvas view
-                ArrayList<Point> pathOfFloor4 = rp.getPathOfFloor4();   // 4층 path arraylist 받아오기
-                ArrayList<Point> pathOfFloor5 = rp.getPathOfFloor5();   // 5층 path arraylist 받아오기
-                canvasView = new CanvasView(getApplicationContext(), view_scale, pathOfFloor4, pathOfFloor5);
+                ArrayList<Point> pathPoint = rp.getPathPoint();   // path의 좌표 arraylist
+                int startFloor = rp.getStartFloor();    // path가 시작하는 층
+                ArrayList<Integer> pointIndexOf4 = rp.getPointIndexOfFloor4();  // 4층 path의 꼭짓점들
+                ArrayList<Integer> pointIndexOf5 = rp.getPointIndexOfFloor5();  // 5층 path의 꼭짓점들
+                canvasView = new CanvasView(getApplicationContext(), view_scale, pathPoint, startFloor,
+                        pointIndexOf4, pointIndexOf5);
                 canvasViewFrame.addView(canvasView);
 
                 //라디오 그룹 클릭 리스너 (각 층에 있는 맵핀과 path만 보이게)
@@ -125,10 +126,10 @@ public class NavigationActivity extends AppCompatActivity {
                 textView_Destination.setText(destinationPlace);
 
                 // add map pins
-                int x_c = rp.getRpList().get(rp.rpToIndex(currentRP)).getX();
-                int y_c = rp.getRpList().get(rp.rpToIndex(currentRP)).getY();
-                int x_d = rp.getRpList().get(rp.rpToIndex(destinationRP)).getX();
-                int y_d = rp.getRpList().get(rp.rpToIndex(destinationRP)).getY();
+                int x_c = RP.getRpList().get(rp.rpToIndex(currentRP)).getX();
+                int y_c = RP.getRpList().get(rp.rpToIndex(currentRP)).getY();
+                int x_d = RP.getRpList().get(rp.rpToIndex(destinationRP)).getX();
+                int y_d = RP.getRpList().get(rp.rpToIndex(destinationRP)).getY();
 
                 // 맵핀 위치 초기 세팅 (5초마다 업데이트할 때도 여기 코드 가져다 쓰기)
                 currentLocationPin.setVisibility(View.VISIBLE);
@@ -182,7 +183,7 @@ public class NavigationActivity extends AppCompatActivity {
                 }
             }
             // nowDirectionIndex로 거기 place 받아오기
-            String changePointPlace = rp.getRpList().get(pathIndex.get(nowDirectionIndex)).getPlace();
+            String changePointPlace = RP.getRpList().get(pathIndex.get(nowDirectionIndex)).getPlace();
 
             // changePoint 까지의 거리를 dijkstra로 받고 보정값 곱하기 (소수점은 올림)
             int weightToChangePoint = (int) (Math.ceil(rp.dijkstra(rp.rpToIndex(currentRP), pathIndex.get(nowDirectionIndex))) * CALIBRATION);
