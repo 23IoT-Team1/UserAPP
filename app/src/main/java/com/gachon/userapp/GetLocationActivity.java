@@ -61,6 +61,9 @@ public class GetLocationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // TODO: 위에서 처음 불러올 때 한 거 똑같이 하기
+
+                wifiScanner.scanWifi();
+
             }
         });
 
