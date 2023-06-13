@@ -281,7 +281,18 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
         handler = new Handler();
 
     }
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
 
+        // Start the periodic Wi-Fi scanning
+            startWifiScan();
+        //Start Sensors
+        sensorManager.registerListener(this, accelermeter, sensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, magnetormeter, sensorManager.SENSOR_DELAY_FASTEST);
+
+    }
     @Override
     public void onSensorChanged(SensorEvent event) {
         //stepCounter
@@ -343,17 +354,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
         }, 5000);
     }
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        // Start the periodic Wi-Fi scanning
-        startWifiScan();
-        //Start Sensors
-        sensorManager.registerListener(this, accelermeter, sensorManager.SENSOR_DELAY_FASTEST);
-        sensorManager.registerListener(this, magnetormeter, sensorManager.SENSOR_DELAY_FASTEST);
 
-    }
 
     @Override
     protected void onPause()
@@ -383,7 +384,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
     private LinearLayout layout_LeftToDestination;
     private Button button_BackToMain;
     private Timer timer;
-    public static String rpValue;
+    public String rpValue;
     private Handler handler;
     private WifiScanner wifiScanner;
     //Sensor 관련 선언들
