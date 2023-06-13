@@ -30,7 +30,7 @@ public class SenderToServer {
         // Convert the measured values to JSON
 
         private static node request_body;
-        private String rpValue="안녕하세요";
+        private String rpValue="4_1";
 
         public SenderToServer(ArrayList arrayList){
 
@@ -48,7 +48,7 @@ public class SenderToServer {
                 Log.d(TAG, json);
 
 
-                OkHttpClient client = new OkHttpClient();
+//                OkHttpClient client = new OkHttpClient();
 
                 Log.e("테스트","testsets");
 /*

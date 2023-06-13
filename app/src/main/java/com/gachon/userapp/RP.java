@@ -290,6 +290,18 @@ public class RP {
         return index;
     }
 
+    public String rpToPlace(String rp) {
+        String place = "";
+
+        for (int i = 0; i < rpList.size(); i++) {
+            if (rp.equals(rpList.get(i).getRp())) {
+                place = rpList.get(i).getPlace();
+            }
+        }
+        Log.d("RP에서 플레이스", place);
+        return place;
+    }
+
     // rp data (size: 95)
     // 4층 4_1 ~ 4_49 (index 0 ~ 48)
     // 5층 5_1 ~ 5_46 (index 49 ~ 94)

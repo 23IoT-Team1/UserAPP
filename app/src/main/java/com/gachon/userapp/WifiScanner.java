@@ -110,11 +110,11 @@ public class WifiScanner {
             SenderToServer sender = new SenderToServer(arrayList);
 
             if (ActivityStatusChecker.isActivityAlive()) {
-                GetLocationActivity GLA = new GetLocationActivity();
-                GLA.set_rpValue(sender.send()+"GLA 입니다.");
+                GetLocationActivity GLA = (GetLocationActivity) context;
+                GLA.set_rpValue(sender.send());
             } else {
-                NavigationActivity NA = new NavigationActivity();
-                NA.set_rpValue(sender.send()+"NA 입니다.");
+                NavigationActivity NA = (NavigationActivity) context;
+                NA.set_rpValue(sender.send());
             }
 
         }
