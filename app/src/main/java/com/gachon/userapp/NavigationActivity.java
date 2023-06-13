@@ -177,7 +177,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
 
 
         // 방향 안내 코드 (얘도 현위치 받아올 때마다 체크할 것에 포함됨)
-        
+
         pathDirection = rp.getPathDirection();  // 여기서 한번만 받아 오기
         // 현위치의 path에서의 순서(index)를 알아내기
         int nowIndex = -1;   // 처음에는 당연히 0이지만 매번 받아올 때를 기준으로 코드 짬
@@ -191,7 +191,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
             textView_LeftToChangePoint.setText("Arrived");
             textView_Direction.setText("at " + destinationPlace);
             textView_ChangePointPlace.setText("");
-            
+
             // 남은 거리 textView(layout)를 안보이게 하고, BackToMain 버튼을 보이게 하기
             layout_LeftToDestination.setVisibility(View.GONE);
             button_BackToMain.setVisibility(View.VISIBLE);
@@ -220,7 +220,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
             // 남은 거리 textView(layout)를 보이게 하고, BackToMain 버튼을 안보이게 하기
             layout_LeftToDestination.setVisibility(View.VISIBLE);
             button_BackToMain.setVisibility(View.GONE);
-            
+
             // case에 따라 처리
             switch (nowDirection) {
                 case "left":    // 좌회전
@@ -281,18 +281,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
         handler = new Handler();
 
     }
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
 
-        // Start the periodic Wi-Fi scanning
-            startWifiScan();
-        //Start Sensors
-        sensorManager.registerListener(this, accelermeter, sensorManager.SENSOR_DELAY_FASTEST);
-        sensorManager.registerListener(this, magnetormeter, sensorManager.SENSOR_DELAY_FASTEST);
-
-    }
     @Override
     public void onSensorChanged(SensorEvent event) {
         //stepCounter
@@ -354,7 +343,17 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
         }, 5000);
     }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        // Start the periodic Wi-Fi scanning
+        startWifiScan();
+        //Start Sensors
+        sensorManager.registerListener(this, accelermeter, sensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, magnetormeter, sensorManager.SENSOR_DELAY_FASTEST);
 
+    }
 
     @Override
     protected void onPause()
@@ -384,7 +383,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
     private LinearLayout layout_LeftToDestination;
     private Button button_BackToMain;
     private Timer timer;
-    public String rpValue;
+    public  String rpValue;
     private Handler handler;
     private WifiScanner wifiScanner;
     //Sensor 관련 선언들

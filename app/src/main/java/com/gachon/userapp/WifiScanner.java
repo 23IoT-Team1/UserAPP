@@ -111,9 +111,9 @@ public class WifiScanner {
 
             if (context.getClass() == GetLocationActivity.class) {
                 GetLocationActivity GLA = (GetLocationActivity) context;
+                GLA.btnclick = true;
                 GLA.set_rpValue(sender.send());
-            }
-            if (context.getClass() == NavigationActivity.class){
+            }else{
                 NavigationActivity NA = (NavigationActivity) context;
                 NA.set_rpValue(sender.send());
             }

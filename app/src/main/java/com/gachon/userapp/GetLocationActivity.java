@@ -38,7 +38,7 @@ public class GetLocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_location);
         ActivityStatusChecker.setActivityStatus(true);
-
+        btnclick = false;
         imageView = findViewById(R.id.imageView);
         textView_RP = findViewById(R.id.textView_RP);
         button_Retry = findViewById(R.id.button_Retry);
@@ -74,6 +74,8 @@ public class GetLocationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 위에서 처음 불러올 때 한 거 똑같이 하기
+                btnclick = false;
+
                 wifiScanner.scanWifi();
 
                 // 이후 RP textView 바꾸기. rp를 받아오면 place로 바꿔서 알려주기
@@ -87,16 +89,18 @@ public class GetLocationActivity extends AppCompatActivity {
         });
 
         // That's right 버튼 -> 목적지 입력 화면으로
+
         button_Right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // place, rp, view_scale 넘겨주면서, 목적지 입력 받는 activity로 이동
-                Intent intent = new Intent(GetLocationActivity.this, SelectDestinationActivity.class);
-                intent.putExtra("current_place", placeValue);
-                intent.putExtra("current_rp", rpValue);
-                intent.putExtra("view_scale", view_scale);
-                startActivity(intent);
+                if(btnclick) {
+                    // place, rp, view_scale 넘겨주면서, 목적지 입력 받는 activity로 이동
+                    Intent intent = new Intent(GetLocationActivity.this, SelectDestinationActivity.class);
+                    intent.putExtra("current_place", placeValue);
+                    intent.putExtra("current_rp", rpValue);
+                    intent.putExtra("view_scale", view_scale);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -104,11 +108,13 @@ public class GetLocationActivity extends AppCompatActivity {
         button_Wrong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(btnclick){
+                    // 현 위치를 유저에게 직접 입력 받는 화면으로 넘어가기
+                    Intent intent = new Intent(GetLocationActivity.this, SelectLocationActivity.class);
+                    startActivity(intent);
+                    finish();   // To prevent confusing
+                }
 
-                // 현 위치를 유저에게 직접 입력 받는 화면으로 넘어가기
-                Intent intent = new Intent(GetLocationActivity.this, SelectLocationActivity.class);
-                startActivity(intent);
-                finish();   // To prevent confusing
             }
         });
     }
@@ -144,4 +150,5 @@ public class GetLocationActivity extends AppCompatActivity {
     public String rpValue;
     public String placeValue;
     RP rp = new RP();
+    public static boolean btnclick;
 }
