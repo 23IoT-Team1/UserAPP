@@ -7,6 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Point;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class NavigationActivity extends AppCompatActivity {
+public class NavigationActivity extends AppCompatActivity implements SensorEventListener {
 
     final int CURRENT_PIN_SIZE_HALF = 7;
     final int DESTINATION_PIN_SIZE_HALF = 8;
@@ -44,7 +48,7 @@ public class NavigationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-
+        pointerContainer =findViewById(R.id.pointerContainer);
         imageView = findViewById(R.id.imageView);
         canvasViewFrame = findViewById(R.id.canvasViewFrame);
         currentLocationPin = findViewById(R.id.currentLocationPin);
@@ -61,6 +65,14 @@ public class NavigationActivity extends AppCompatActivity {
         textView_LeftToDestination = findViewById(R.id.textView_LeftToDestination);
         layout_LeftToDestination = findViewById(R.id.layout_LeftToDestination);
         button_BackToMain = findViewById(R.id.button_BackToMain);
+
+
+
+        //Sensor
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        magnetormeter = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        accelermeter = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
 
         // Get Intent (rp of current location)
         Intent intent = getIntent();
@@ -144,7 +156,12 @@ public class NavigationActivity extends AppCompatActivity {
                 destinationPin.setVisibility(View.VISIBLE);
                 destinationPin.setX((x_d / view_scale - DESTINATION_PIN_SIZE_HALF) * density);
                 destinationPin.setY((y_d / view_scale - DESTINATION_PIN_SIZE_HALF*2) * density);
+                //pointer animation
+                pivotX = (x_c / view_scale - CURRENT_PIN_SIZE_HALF) * density ;
+                pivotY = (y_c / view_scale - CURRENT_PIN_SIZE_HALF) * density ;
 
+                rotateAnimationHelper = new RotateAnimationHelper(currentLocationPin, imageView);
+                rotateAnimationHelper.initialize(pivotX,pivotY);
                 // current location이 있는 층으로 spinner랑 radioButton 초기화
                 if (currentRP.startsWith("4")) {
                     radioButton_4F.setChecked(true);
@@ -152,10 +169,12 @@ public class NavigationActivity extends AppCompatActivity {
                 else {
                     radioButton_5F.setChecked(true);
                 }
+
             }
+
         }, 200);// 0.2초 딜레이를 준 후 시작 (imageView의 width를 먼저 받아오기 위해)
 
-        
+
 
         // 방향 안내 코드 (얘도 현위치 받아올 때마다 체크할 것에 포함됨)
         
@@ -262,12 +281,38 @@ public class NavigationActivity extends AppCompatActivity {
         handler = new Handler();
 
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-        // Start the periodic Wi-Fi scanning
-        startWifiScan();
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        //stepCounter
+        /*if (event.sensor == stepSensor) {
+                stepCounter++;
+                txtSteps.setText(String.valueOf(stepCounter) + "\n" + String.valueOf((float) (stepCounter * 0.6)) + " m");
+        }
+        else */
+
+        if (event.sensor == magnetormeter) {
+
+            //System.arraycopy(event.values, 0, mLastMagnetormeter, 0, 2);
+            mLastMagnetormeter[0] = event.values[0];
+            mLastMagnetormeter[1] = event.values[1];
+            mLastMagnetormeter[2] = event.values[2];
+            SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetormeter);
+
+            mCurrentDegree = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0])+85) % 360;
+            azimuthunDegress = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0]) + 360) % 360;
+
+            //rotate
+            rotateAnimationHelper.rotate(mCurrentDegree, -azimuthunDegress, 1000);
+            mCurrentDegree = -azimuthunDegress;
+        } else if (event.sensor == accelermeter) {
+            System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.length);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
     @Override
     protected void onStop() {
@@ -297,6 +342,29 @@ public class NavigationActivity extends AppCompatActivity {
             }
         }, 5000);
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        // Start the periodic Wi-Fi scanning
+        startWifiScan();
+        //Start Sensors
+        sensorManager.registerListener(this, accelermeter, sensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, magnetormeter, sensorManager.SENSOR_DELAY_FASTEST);
+
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        sensorManager.unregisterListener(this, accelermeter);
+        sensorManager.unregisterListener(this, magnetormeter);
+
+        wifiScanner.stopWifiScan();
+    }
+    private  FrameLayout pointerContainer;
     private ImageView imageView;
     private FrameLayout canvasViewFrame;
     private CanvasView canvasView;
@@ -315,9 +383,18 @@ public class NavigationActivity extends AppCompatActivity {
     private LinearLayout layout_LeftToDestination;
     private Button button_BackToMain;
     private Timer timer;
-    private WifiScanner wifiScanner2;
     public static String rpValue;
     private Handler handler;
     private WifiScanner wifiScanner;
-
+    //Sensor 관련 선언들
+    private SensorManager sensorManager;
+    private Sensor magnetormeter,accelermeter;
+    private float[] mR = new float[9];
+    private float[] mLastAccelerometer = new float[3];
+    private float[] mLastMagnetormeter = new float[3];
+    private float[] mOrientation = new float[3];
+    private static float mCurrentDegree = 0f;
+    private static float azimuthunDegress= 0f;
+    private RotateAnimationHelper rotateAnimationHelper;
+    private float pivotX,pivotY;
 }

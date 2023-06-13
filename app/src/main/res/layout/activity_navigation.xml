@@ -111,6 +111,7 @@
             </RadioGroup>
 
             <FrameLayout
+                android:id="@+id/pointerContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
