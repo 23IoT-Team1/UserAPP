@@ -45,15 +45,18 @@ public class SenderToServer {
         public String send() {
                 Gson gson = new Gson();
                 String json = gson.toJson(request_body);
-                Log.d(TAG, json);
-
+                if (json != null) {
+                        Log.d(TAG, json);
+                } else {
+                        Log.d(TAG, "JSON is null");
+                }
 
                 OkHttpClient client = new OkHttpClient();
 
                 Log.e("테스트","testsets");
 
                 Request request = new Request.Builder()
-                        .url("http://172.16.232.218:8080/rp")
+                        .url("http://172.16.232.218:8080/rp/position")
                         .post(RequestBody.create(MediaType.parse("application/json"), json))
                         .build();
 
@@ -62,7 +65,7 @@ public class SenderToServer {
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                                 if (response.isSuccessful()) {
                                         String responseBody = response.body().string();
-                                        Log.d(TAG, "Server Response: " + responseBody);
+                                        Log.d("!!!!!!!!!!!!!!!!", "Server Response: " + responseBody);
 
                                         try {
                                                 JSONObject jsonObject = new JSONObject(responseBody);
@@ -70,6 +73,8 @@ public class SenderToServer {
                                                 Log.d(TAG, "RP Value: " + rpValue);
 
                                         } catch (JSONException e) {
+                                                Log.e("테스트2222","testsets");
+
                                                 e.printStackTrace();
                                         }
                                 }
@@ -77,9 +82,12 @@ public class SenderToServer {
 
                         @Override
                         public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                Log.e("테스트3333","testsets");
                                 e.printStackTrace();
                         }
                 });
+
+
 
                 return rpValue;
         }
