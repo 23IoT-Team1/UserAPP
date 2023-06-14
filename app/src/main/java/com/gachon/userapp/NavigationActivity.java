@@ -267,10 +267,6 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
             public void onClick(View view) {
                 // rp에 있는 arraylist들 초기화
                 rp.clearArrayLists();
-
-                // main 화면으로 이동
-                Intent intent = new Intent(NavigationActivity.this, HomeActivity.class);
-                startActivity(intent);
                 finish();
             }
         });
@@ -344,107 +340,112 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
     public void set_rpValue(String rpValue) {
         this.rpValue = rpValue;
 
-        // currentRP에 세팅
-        currentRP = rpValue;
-        currentPlace = rp.rpToPlace(rpValue);
+        if (rpValue != null) {
 
-        // set textView
-        textView_Current.setText(currentPlace);
+            // currentRP에 세팅
+            currentRP = rpValue;
+            currentPlace = rp.rpToPlace(rpValue);
 
-        // 맵핀 좌표
-        int x_c = RP.getRpList().get(rp.rpToIndex(currentRP)).getX();
-        int y_c = RP.getRpList().get(rp.rpToIndex(currentRP)).getY();
+            // set textView
+            textView_Current.setText(currentPlace);
 
-        // 맵핀 위치 변경
-        currentLocationPin.setVisibility(View.VISIBLE);
-        currentLocationPin.setX((x_c / view_scale - CURRENT_PIN_SIZE_HALF) * density);
-        currentLocationPin.setY((y_c / view_scale - CURRENT_PIN_SIZE_HALF) * density);
+            // 맵핀 좌표
+            int x_c = RP.getRpList().get(rp.rpToIndex(currentRP)).getX();
+            int y_c = RP.getRpList().get(rp.rpToIndex(currentRP)).getY();
 
-        //pointer animation
-        pivotX = (x_c / view_scale - CURRENT_PIN_SIZE_HALF) * density ;
-        pivotY = (y_c / view_scale - CURRENT_PIN_SIZE_HALF) * density ;
-        rotateAnimationHelper.initialize(pivotX,pivotY);
+            // 맵핀 위치 변경
+            currentLocationPin.setVisibility(View.VISIBLE);
+            currentLocationPin.setX((x_c / view_scale - CURRENT_PIN_SIZE_HALF) * density);
+            currentLocationPin.setY((y_c / view_scale - CURRENT_PIN_SIZE_HALF) * density);
 
-        // 현위치의 path에서의 순서(index)를 알아내기
-        int nowIndex = -1;
-        for (int i = 0; i < pathIndex.size(); i++) {
-            if (pathIndex.get(i) == rp.rpToIndex(currentRP)) { nowIndex = i; }
-        }
+            //pointer animation
+            pivotX = (x_c / view_scale - CURRENT_PIN_SIZE_HALF) * density;
+            pivotY = (y_c / view_scale - CURRENT_PIN_SIZE_HALF) * density;
+            rotateAnimationHelper.initialize(pivotX, pivotY);
 
-        if (nowIndex == -1) {}  // 아예 path에 없는 rp가 현위치로 잡히면, 현위치마커(핀)만 바꾸고 방향 안내는 바꾸지 말기
-        else if (nowIndex == pathIndex.size() - 1) { // 목적지에 도착했다면
-            imageView_direction.setImageResource(R.drawable.d_destination);
-            textView_LeftToChangePoint.setText("Arrived");
-            textView_Direction.setText("at " + destinationPlace);
-            textView_ChangePointPlace.setText("");
-
-            // 남은 거리 textView(layout)를 안보이게 하고, BackToMain 버튼을 보이게 하기
-            layout_LeftToDestination.setVisibility(View.GONE);
-            button_BackToMain.setVisibility(View.VISIBLE);
-        }
-        else {
-            // 현위치 바로 다음에 있는 left/right/endOfFloor/elevator/destination 값에 따라 UI 변경
-            String nowDirection = "";   // 받아올 string
-            int nowDirectionIndex = -1;
-            for (int i = nowIndex + 1; i < pathDirection.size(); i++) {
-                if (!pathDirection.get(i).equals("way")) {  // way가 아니라 특정값이라면
-                    nowDirection = pathDirection.get(i);
-                    nowDirectionIndex = i;
-                    break;
+            // 현위치의 path에서의 순서(index)를 알아내기
+            int nowIndex = -1;
+            for (int i = 0; i < pathIndex.size(); i++) {
+                if (pathIndex.get(i) == rp.rpToIndex(currentRP)) {
+                    nowIndex = i;
                 }
             }
-            // nowDirectionIndex로 거기 place 받아오기
-            String changePointPlace = RP.getRpList().get(pathIndex.get(nowDirectionIndex)).getPlace();
 
-            // changePoint 까지의 거리를 dijkstra로 받고 보정값 곱하기 (소수점은 올림)
-            int weightToChangePoint = (int) (Math.ceil(rp.dijkstra(rp.rpToIndex(currentRP), pathIndex.get(nowDirectionIndex))) * CALIBRATION);
-            // 목적지까지의 거리를 dijkstra로 받고 보정값 곱하기
-            int weightToDestination = (int) (Math.ceil(rp.dijkstra(rp.rpToIndex(currentRP), rp.rpToIndex(destinationRP))) * CALIBRATION);
-            textView_LeftToDestination.setText(weightToDestination + "m");  // 목적지까지 거리 먼저 세팅
+            if (nowIndex == -1) {
+            }  // 아예 path에 없는 rp가 현위치로 잡히면, 현위치마커(핀)만 바꾸고 방향 안내는 바꾸지 말기
+            else if (nowIndex == pathIndex.size() - 1) { // 목적지에 도착했다면
+                imageView_direction.setImageResource(R.drawable.d_destination);
+                textView_LeftToChangePoint.setText("Arrived");
+                textView_Direction.setText("at " + destinationPlace);
+                textView_ChangePointPlace.setText("");
 
-            // 혹시 모를 visability 세팅
-            // 남은 거리 textView(layout)를 보이게 하고, BackToMain 버튼을 안보이게 하기
-            layout_LeftToDestination.setVisibility(View.VISIBLE);
-            button_BackToMain.setVisibility(View.GONE);
-
-            // case에 따라 처리
-            switch (nowDirection) {
-                case "left":    // 좌회전
-                    imageView_direction.setImageResource(R.drawable.d_left);
-                    textView_LeftToChangePoint.setText(weightToChangePoint + "m");
-                    textView_Direction.setText("Turn left at ");
-                    textView_ChangePointPlace.setText(changePointPlace);    // ~에서 좌회전. 이런 느낌
-                    break;
-
-                case "right":   // 우회전
-                    imageView_direction.setImageResource(R.drawable.d_right);
-                    textView_LeftToChangePoint.setText(weightToChangePoint + "m");
-                    textView_Direction.setText("Turn right at ");
-                    textView_ChangePointPlace.setText(changePointPlace);
-                    break;
-
-                case "endOfFloor": // 직진
-                case "destination": // 직진
-                    imageView_direction.setImageResource(R.drawable.d_straight);
-                    textView_LeftToChangePoint.setText(weightToChangePoint + "m");
-                    textView_Direction.setText("Go straight to ");
-                    textView_ChangePointPlace.setText(changePointPlace);
-                    break;
-
-                case "elevator":    // 층이 바뀜
-                    imageView_direction.setImageResource(R.drawable.d_stair);
-                    // 층을 올라가는지 내려가는지 판별
-                    if (pathIndex.get(nowDirectionIndex) < 49 ||
-                            (pathIndex.get(nowDirectionIndex) >= 95 && pathIndex.get(nowDirectionIndex) <= 97)) {    // 4층으로 갈 때
-                        textView_LeftToChangePoint.setText("Go down");
-                        textView_Direction.setText("to the 4th floor");
-                        textView_ChangePointPlace.setText("");
-                    } else {  // 5층으로 갈 떄
-                        textView_LeftToChangePoint.setText("Go up");
-                        textView_Direction.setText("to the 5th floor");
-                        textView_ChangePointPlace.setText("");
+                // 남은 거리 textView(layout)를 안보이게 하고, BackToMain 버튼을 보이게 하기
+                layout_LeftToDestination.setVisibility(View.GONE);
+                button_BackToMain.setVisibility(View.VISIBLE);
+            } else {
+                // 현위치 바로 다음에 있는 left/right/endOfFloor/elevator/destination 값에 따라 UI 변경
+                String nowDirection = "";   // 받아올 string
+                int nowDirectionIndex = -1;
+                for (int i = nowIndex + 1; i < pathDirection.size(); i++) {
+                    if (!pathDirection.get(i).equals("way")) {  // way가 아니라 특정값이라면
+                        nowDirection = pathDirection.get(i);
+                        nowDirectionIndex = i;
+                        break;
                     }
-                    break;
+                }
+                // nowDirectionIndex로 거기 place 받아오기
+                String changePointPlace = RP.getRpList().get(pathIndex.get(nowDirectionIndex)).getPlace();
+
+                // changePoint 까지의 거리를 dijkstra로 받고 보정값 곱하기 (소수점은 올림)
+                int weightToChangePoint = (int) (Math.ceil(rp.dijkstra(rp.rpToIndex(currentRP), pathIndex.get(nowDirectionIndex))) * CALIBRATION);
+                // 목적지까지의 거리를 dijkstra로 받고 보정값 곱하기
+                int weightToDestination = (int) (Math.ceil(rp.dijkstra(rp.rpToIndex(currentRP), rp.rpToIndex(destinationRP))) * CALIBRATION);
+                textView_LeftToDestination.setText(weightToDestination + "m");  // 목적지까지 거리 먼저 세팅
+
+                // 혹시 모를 visability 세팅
+                // 남은 거리 textView(layout)를 보이게 하고, BackToMain 버튼을 안보이게 하기
+                layout_LeftToDestination.setVisibility(View.VISIBLE);
+                button_BackToMain.setVisibility(View.GONE);
+
+                // case에 따라 처리
+                switch (nowDirection) {
+                    case "left":    // 좌회전
+                        imageView_direction.setImageResource(R.drawable.d_left);
+                        textView_LeftToChangePoint.setText(weightToChangePoint + "m");
+                        textView_Direction.setText("Turn left at ");
+                        textView_ChangePointPlace.setText(changePointPlace);    // ~에서 좌회전. 이런 느낌
+                        break;
+
+                    case "right":   // 우회전
+                        imageView_direction.setImageResource(R.drawable.d_right);
+                        textView_LeftToChangePoint.setText(weightToChangePoint + "m");
+                        textView_Direction.setText("Turn right at ");
+                        textView_ChangePointPlace.setText(changePointPlace);
+                        break;
+
+                    case "endOfFloor": // 직진
+                    case "destination": // 직진
+                        imageView_direction.setImageResource(R.drawable.d_straight);
+                        textView_LeftToChangePoint.setText(weightToChangePoint + "m");
+                        textView_Direction.setText("Go straight to ");
+                        textView_ChangePointPlace.setText(changePointPlace);
+                        break;
+
+                    case "elevator":    // 층이 바뀜
+                        imageView_direction.setImageResource(R.drawable.d_stair);
+                        // 층을 올라가는지 내려가는지 판별
+                        if (pathIndex.get(nowDirectionIndex) < 49 ||
+                                (pathIndex.get(nowDirectionIndex) >= 95 && pathIndex.get(nowDirectionIndex) <= 97)) {    // 4층으로 갈 때
+                            textView_LeftToChangePoint.setText("Go down");
+                            textView_Direction.setText("to the 4th floor");
+                            textView_ChangePointPlace.setText("");
+                        } else {  // 5층으로 갈 떄
+                            textView_LeftToChangePoint.setText("Go up");
+                            textView_Direction.setText("to the 5th floor");
+                            textView_ChangePointPlace.setText("");
+                        }
+                        break;
+                }
             }
         }
 
@@ -459,9 +460,9 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
                 wifiScanner.scanWifi();
 
                 // Schedule the next Wi-Fi scan after the specified interval
-                handler.postDelayed(this, 5000);
+                handler.postDelayed(this, 3000);
             }
-        }, 5000);
+        }, 3000);
     }
 
     @Override
