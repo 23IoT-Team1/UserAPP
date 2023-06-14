@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -45,7 +44,6 @@ public class HomeActivity extends AppCompatActivity {
         ActivityStatusChecker.setActivityStatus(false);
 //        Toast.makeText(this, "onPause 호출됨", Toast.LENGTH_SHORT).show();
         this.unregisterReceiver(wifiScanner.getWifiReceiver());
-        Log.d("GLA", "onPause 호출됨");
     }
     // declaration
     private Button button_Next;

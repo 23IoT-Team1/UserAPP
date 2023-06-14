@@ -1,8 +1,6 @@
 package com.gachon.userapp;
 
 import android.graphics.Point;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -81,7 +79,6 @@ public class RP {
         if (pathIndex.size() > 0) { pathIndex.clear(); }    // 초기화
         
         if (previous[endNode] == -1) {
-            Log.d("dijkstra", "No path found.");
         } else {
             int node = endNode;
 
@@ -147,7 +144,6 @@ public class RP {
         else {  // 엄청 가까운 거리여서 path가 2개 이하일 때 처리
             switch (pathPoint.size()) {
                 case 0:
-                    Log.d("path", "path not found");
                     break;
                 case 1:
                     pathDirection.add("destination");
@@ -300,7 +296,6 @@ public class RP {
                 place = rpList.get(i).getPlace();
             }
         }
-        Log.d("RP에서 플레이스", place);
         return place;
     }
 

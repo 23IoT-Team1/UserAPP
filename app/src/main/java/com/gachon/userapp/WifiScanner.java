@@ -6,12 +6,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 import android.widget.Toast;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -112,16 +109,16 @@ public class WifiScanner {
                 GLA.btnclick = true;
                 rpValue = String.valueOf(sender.send());
                 GLA.set_rpValue(rpValue);
-                Log.d("제발제발제발제발제발제발제발", rpValue);
-                Log.d("WifiScanner", "GLA");
+
             }
             else if (context.getClass() == NavigationActivity.class) {
                 NavigationActivity NA = (NavigationActivity) context;
                 rpValue = String.valueOf(sender.send());
-                Log.d("제발제발제발제발제발제발제발", rpValue);
                 NA.set_rpValue(rpValue);
             }
-            else { Log.d("WifiScanner", "안돼"); }
+            else {
+                Toast.makeText(context, "Scanning Problem ", Toast.LENGTH_SHORT).show();
+            }
 
         }
     };

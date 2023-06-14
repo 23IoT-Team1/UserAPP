@@ -1,32 +1,17 @@
 package com.gachon.userapp;
 
-import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.Point;
-import android.graphics.PointF;
-import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -121,7 +106,6 @@ public class GetLocationActivity extends AppCompatActivity {
 
     public void set_rpValue(String rpValue) {
         this.rpValue = rpValue;
-        Log.d("GLA에 rpValue 세팅", this.rpValue);
         placeValue = rp.rpToPlace(rpValue);
         textView_RP.setText(placeValue);
 

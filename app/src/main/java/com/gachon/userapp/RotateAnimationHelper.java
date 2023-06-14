@@ -2,10 +2,8 @@
 //출처 : https://copycoding.tistory.com/tag/TYPE_ACCELEROMETER
 package com.gachon.userapp;
 
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 

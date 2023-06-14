@@ -7,7 +7,6 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Shader;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -88,7 +87,6 @@ import java.util.ArrayList;
                     if (i != 0) {
                         // i 동그라미
                         paint.setColor(colors[i]);
-                        Log.d("color4", String.valueOf(i));
                         canvas.drawCircle(x1, y1, 1f, paint);
                     }
 
@@ -102,7 +100,6 @@ import java.util.ArrayList;
                 float x = pathPoint.get(pointIndexOf4.get(index)).x / view_scale * density;
                 float y = pathPoint.get(pointIndexOf4.get(index)).y / view_scale * density;
                 paint.setColor(colors[lastColorOf4]);
-                Log.d("lastcolor4", String.valueOf(lastColorOf4));
                 canvas.drawCircle(x, y, 3f, paint);
             }
         }
@@ -125,7 +122,6 @@ import java.util.ArrayList;
                     if (i != 0) {
                         // i 동그라미
                         paint.setColor(colors[i]);
-                        Log.d("color5", String.valueOf(i));
                         canvas.drawCircle(x1, y1, 1f, paint);
                     }
 
@@ -139,7 +135,6 @@ import java.util.ArrayList;
                 float x = pathPoint.get(pointIndexOf5.get(index)).x / view_scale * density;
                 float y = pathPoint.get(pointIndexOf5.get(index)).y / view_scale * density;
                 paint.setColor(colors[lastColorOf5]);
-                Log.d("lastcolor5", String.valueOf(lastColorOf5));
                 canvas.drawCircle(x, y, 3f, paint);
 
             }

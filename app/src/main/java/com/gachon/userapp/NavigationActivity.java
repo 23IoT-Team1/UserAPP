@@ -14,7 +14,6 @@ import android.hardware.SensorManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -27,7 +26,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class NavigationActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -345,7 +343,6 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
     }
     public void set_rpValue(String rpValue) {
         this.rpValue = rpValue;
-        Log.d("제발제발네비게이션", this.rpValue);
 
         // currentRP에 세팅
         currentRP = rpValue;
