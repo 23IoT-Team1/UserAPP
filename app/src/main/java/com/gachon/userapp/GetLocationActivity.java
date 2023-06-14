@@ -60,9 +60,7 @@ public class GetLocationActivity extends AppCompatActivity {
 
         // activity 불러 오자 마자 바로 wifi scan 후 현위치 결과 받아 오기
         wifiScanner = new WifiScanner(this, (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), new ArrayList<>());
-        this.registerReceiver(wifiScanner.getWifiReceiver(), new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        wifiScanner.requestPermissions();
-        wifiScanner.scanWifi();
+
 
         // 현 위치 다시 인식하는 버튼
         button_Retry.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +68,6 @@ public class GetLocationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 위에서 처음 불러올 때 한 거 똑같이 하기
                 btnclick = false;
-
                 wifiScanner.scanWifi();
             }
         });
@@ -107,6 +104,12 @@ public class GetLocationActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.registerReceiver(wifiScanner.getWifiReceiver(), new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        wifiScanner.scanWifi();
     }
     @Override
     protected void onPause() {

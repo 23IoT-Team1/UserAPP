@@ -277,7 +277,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
         });
 
         // Initialize the WifiScanner instance
-        wifiScanner = new WifiScannerForNA(this, (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), new ArrayList<>());
+        wifiScanner = new WifiScanner(this, (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), new ArrayList<>());
         this.registerReceiver(wifiScanner.getWifiReceiver(), new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         //...register가 없었잖아요...ㅜㅜㅠㅠ 이게 문제였던 것 같으니까 코드 정리할 때 WifiScannerForNA를 지우고 WifiScanner.java 코드를 복원하는 게 좋을 것 같아요
         // Create a handler to schedule the Wi-Fi scan periodically
@@ -311,7 +311,6 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
                         @Override
                         public void run() {
                             mCurrentDegree = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0])+95) % 360;
-                            Log.d("!!!!!!!!!!!!!!!!!!!!",String.valueOf(mCurrentDegree));
                             azimuthunDegress = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0]) + 360) % 360;
                             //rotate
                             rotateAnimationHelper.rotate(mCurrentDegree, -azimuthunDegress, 1000);
@@ -507,7 +506,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
     private Timer timer;
     public  String rpValue;
     private Handler handler;
-    private WifiScannerForNA wifiScanner;
+    private WifiScanner wifiScanner;
     //Sensor 관련 선언들
     private SensorManager sensorManager;
     private Sensor magnetormeter,accelermeter;

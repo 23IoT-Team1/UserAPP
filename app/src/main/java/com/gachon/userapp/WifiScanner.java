@@ -31,15 +31,16 @@ public class WifiScanner {
     public final WifiManager wifiManager;
     public final List<ScanResult> scanResults;
     public final ArrayList<WifiDTO> arrayList;
-    public boolean start;
+    public static boolean start;
 
     public WifiScanner(Context context, WifiManager wifiManager, ArrayList<WifiDTO> arrayList) {
         this.context = context;
         this.wifiManager = wifiManager;
         this.arrayList = arrayList;
         this.scanResults = new ArrayList<>();
-        this.start = false;
     }
+
+
 
     public void scanWifi() {
         Log.d("wifi scan전 입니다.","wifi scan전 입니다.");
@@ -61,7 +62,7 @@ public class WifiScanner {
                 ContextCompat.checkSelfPermission(context, permissions[2]) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(context, permissions[3]) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions((GetLocationActivity) context, permissions, REQUEST_PERMISSION_CODE);
+            ActivityCompat.requestPermissions((HomeActivity) context, permissions, REQUEST_PERMISSION_CODE);
 
         } else {
             Toast.makeText(context, "Permissions already granted", Toast.LENGTH_SHORT).show();

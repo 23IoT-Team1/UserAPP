@@ -30,7 +30,7 @@ public class SenderToServer {
         // Convert the measured values to JSON
 
         private static node request_body;
-        private String rpValue="4_44";
+        private String rpValue;
 
         public SenderToServer(ArrayList arrayList){
 
@@ -53,7 +53,7 @@ public class SenderToServer {
                 Log.e("테스트","testsets");
 
                 Request request = new Request.Builder()
-                        .url("http://172.16.63.238:8080/rp")
+                        .url("http://172.16.232.218:8080/rp")
                         .post(RequestBody.create(MediaType.parse("application/json"), json))
                         .build();
 
