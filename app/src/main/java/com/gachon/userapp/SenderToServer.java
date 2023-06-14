@@ -2,6 +2,8 @@
 //출처 : https://snowdeer.github.io/android/2017/03/03/get-and-post-and-put-using-okhttp/
 package com.gachon.userapp;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import org.json.JSONException;
@@ -32,7 +34,10 @@ public class SenderToServer {
                 Gson gson = new Gson();
                 String json = gson.toJson(request_body);
                 if (json != null) {
+                        Log.d("scan 값",json );
                 } else {
+                        Log.d("scan 값", "NULL" );
+
                 }
 
                 OkHttpClient client = new OkHttpClient();

@@ -267,6 +267,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
             public void onClick(View view) {
                 // rp에 있는 arraylist들 초기화
                 rp.clearArrayLists();
+                handler=null;
                 finish();
             }
         });
@@ -279,6 +280,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
         // Create a handler to schedule the Wi-Fi scan periodically
         handler = new Handler();
 
+        // Start the periodic Wi-Fi scanning
     }
 
     @Override
@@ -327,6 +329,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -453,24 +456,31 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
     // declaration
     private void startWifiScan() {
         // Schedule the Wi-Fi scan periodically
-        handler.postDelayed(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
                 // Start the Wi-Fi scan
-                wifiScanner.scanWifi();
+
+                try {
+                    wifiScanner.scanWifi();
+                    handler.post(this);
+                } catch (Exception e) {
+                    handler= null;
+                    finish();
+                }
 
                 // Schedule the next Wi-Fi scan after the specified interval
-                handler.postDelayed(this, 3000);
+
             }
-        }, 3000);
+        });
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
-        // Start the periodic Wi-Fi scanning
         startWifiScan();
+
         //Start Sensors
         sensorManager.registerListener(this, accelermeter, sensorManager.SENSOR_DELAY_FASTEST);
         sensorManager.registerListener(this, magnetormeter, sensorManager.SENSOR_DELAY_FASTEST);
@@ -485,6 +495,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
         sensorManager.unregisterListener(this, magnetormeter);
 
         wifiScanner.stopWifiScan();
+        handler =null;
     }
     private  FrameLayout pointerContainer;
     private ImageView imageView;
@@ -506,7 +517,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
     private Button button_BackToMain;
     private Timer timer;
     public  String rpValue;
-    private Handler handler;
+    private static Handler handler;
     private WifiScanner wifiScanner;
     //Sensor 관련 선언들
     private SensorManager sensorManager;

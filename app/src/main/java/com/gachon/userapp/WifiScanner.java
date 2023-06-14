@@ -25,7 +25,7 @@ public class WifiScanner {
     };
 
     public final Context context;
-    public final WifiManager wifiManager;
+    public final  WifiManager wifiManager;
     public final List<ScanResult> scanResults;
     public final ArrayList<WifiDTO> arrayList;
     public static boolean start;
@@ -46,7 +46,7 @@ public class WifiScanner {
                 wifiManager.setWifiEnabled(true);
             }
             wifiManager.startScan();
-            Toast.makeText(context, "SCANNING", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "SCANNING", Toast.LENGTH_LONG).show();
         } else {
             requestPermissions();
         }
