@@ -60,7 +60,7 @@ public class GetLocationActivity extends AppCompatActivity {
 
         // activity 불러 오자 마자 바로 wifi scan 후 현위치 결과 받아 오기
         wifiScanner = new WifiScanner(this, (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), new ArrayList<>());
-
+        wifiScanner.requestPermissions();
 
         // 현 위치 다시 인식하는 버튼
         button_Retry.setOnClickListener(new View.OnClickListener() {
@@ -116,8 +116,7 @@ public class GetLocationActivity extends AppCompatActivity {
         super.onPause();
         // Set activity status
         ActivityStatusChecker.setActivityStatus(false);
-//        Toast.makeText(this, "onPause 호출됨", Toast.LENGTH_SHORT).show();
-        Log.d("GLA", "onPause 호출됨");
+
     }
 
     public void set_rpValue(String rpValue) {

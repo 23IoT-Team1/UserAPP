@@ -12,8 +12,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-public class CanvasView extends View {
-
+    public class CanvasView extends View {
     Paint paint = new Paint();
     float density = getResources().getDisplayMetrics().density;
     public boolean isFloor4;   // 층에따라 다른 경로 보여주기
@@ -146,10 +145,5 @@ public class CanvasView extends View {
             }
         }
     }
-
-
-
-
-
 
 }

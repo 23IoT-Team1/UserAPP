@@ -18,7 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class WifiScanner {
-    public String rpValue="4-1";
+    public String rpValue;
     public static final int REQUEST_PERMISSION_CODE = 123;
     public final String[] permissions = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -112,6 +112,7 @@ public class WifiScanner {
                 GLA.btnclick = true;
                 rpValue = String.valueOf(sender.send());
                 GLA.set_rpValue(rpValue);
+                Log.d("제발제발제발제발제발제발제발", rpValue);
                 Log.d("WifiScanner", "GLA");
             }
             else if (context.getClass() == NavigationActivity.class) {
@@ -128,6 +129,5 @@ public class WifiScanner {
         if (wifiReceiver != null) {
             context.unregisterReceiver(wifiReceiver);
         }
-
     }
 }

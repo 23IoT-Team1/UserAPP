@@ -33,25 +33,14 @@ public class RotateAnimationHelper {
                 containerHeight = imageView.getHeight();
                 pivotX = x+((float)pointer.getWidth()/2);
                 pivotY = y+((float)pointer.getHeight()/2);
-                Log.d("containerWidth2222", String.valueOf(pointer.getWidth()));
-                Log.d("containerHeight2222", String.valueOf(pointer.getHeight()));
-                Log.d("containerWidth2222", String.valueOf(containerWidth));
-                Log.d("containerHeight2222", String.valueOf(containerHeight));
-                Log.d("pivotX2222", String.valueOf(pivotX));
-                Log.d("pivotY2222", String.valueOf(pivotY));
+
 
             }
         });
     }
 
     public void rotate(float mCurrentDegree, float azimuthunDegress, int duration) {
-        /*Log.d("containerWidth1111", String.valueOf(containerWidth));
-        Log.d("containerHeight1111", String.valueOf(containerHeight));
-        Log.d("pivotX1111", String.valueOf(pivotX));
-        Log.d("pivotY1111", String.valueOf(pivotY));
-        Log.d("pivotX/ containerWidth", String.valueOf(pivotY/ containerHeight));
-        Log.d("pivotY/ containerHeight", String.valueOf(pivotY/ containerHeight));*/
-        Log.d("~~~~~~~~~~~~~~~~~~~",String.valueOf(mCurrentDegree));
+
 
         RotateAnimation ra = new RotateAnimation(
                 mCurrentDegree,
@@ -61,7 +50,6 @@ public class RotateAnimationHelper {
         );
 
         ra.setDuration(duration);
-//        ra.setFillEnabled(true);
         ra.setFillBefore(true);
         pointer.startAnimation(ra);
     }

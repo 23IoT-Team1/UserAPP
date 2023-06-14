@@ -5,7 +5,6 @@ package com.gachon.userapp;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -29,7 +28,7 @@ import okhttp3.Response;
 public class SenderToServer {
 
         private static node request_body;
-        private String rpValue="GOD BLESS YOU";
+        private String rpValue="4_1";
         private CountDownLatch latch;
 
         public SenderToServer(ArrayList arrayList) {
@@ -45,7 +44,7 @@ public class SenderToServer {
                 } else {
                         Log.d(TAG, "JSON is null");
                 }
-/*
+
                 OkHttpClient client = new OkHttpClient();
 
                 Request request = new Request.Builder()
@@ -77,13 +76,11 @@ public class SenderToServer {
                                 latch.countDown(); // Release the latch in case of failure
                         }
                 });
-
                 try {
                         latch.await(); // Wait until the latch is released
                 } catch (InterruptedException e) {
                         e.printStackTrace();
-                }*/
-
+                }
                 return rpValue;
         }
 }
