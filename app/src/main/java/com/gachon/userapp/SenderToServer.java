@@ -43,43 +43,43 @@ public class SenderToServer {
 
         }
         public String send() {
-                Gson gson = new Gson();
-                String json = gson.toJson(request_body);
-                Log.d(TAG, json);
-
-
-                OkHttpClient client = new OkHttpClient();
-
-                Log.e("테스트","testsets");
-
-                Request request = new Request.Builder()
-                        .url("http://172.16.63.238:8080/rp")
-                        .post(RequestBody.create(MediaType.parse("application/json"), json))
-                        .build();
-
-                client.newCall(request).enqueue(new Callback() {
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                                if (response.isSuccessful()) {
-                                        String responseBody = response.body().string();
-                                        Log.d(TAG, "Server Response: " + responseBody);
-
-                                        try {
-                                                JSONObject jsonObject = new JSONObject(responseBody);
-                                                rpValue = jsonObject.getString("rp");
-                                                Log.d(TAG, "RP Value: " + rpValue);
-
-                                        } catch (JSONException e) {
-                                                e.printStackTrace();
-                                        }
-                                }
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                                e.printStackTrace();
-                        }
-                });
+//                Gson gson = new Gson();
+//                String json = gson.toJson(request_body);
+//                Log.d(TAG, json);
+//
+//
+//                OkHttpClient client = new OkHttpClient();
+//
+//                Log.e("테스트","testsets");
+//
+//                Request request = new Request.Builder()
+//                        .url("http://172.16.63.238:8080/rp")
+//                        .post(RequestBody.create(MediaType.parse("application/json"), json))
+//                        .build();
+//
+//                client.newCall(request).enqueue(new Callback() {
+//                        @Override
+//                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+//                                if (response.isSuccessful()) {
+//                                        String responseBody = response.body().string();
+//                                        Log.d(TAG, "Server Response: " + responseBody);
+//
+//                                        try {
+//                                                JSONObject jsonObject = new JSONObject(responseBody);
+//                                                rpValue = jsonObject.getString("rp");
+//                                                Log.d(TAG, "RP Value: " + rpValue);
+//
+//                                        } catch (JSONException e) {
+//                                                e.printStackTrace();
+//                                        }
+//                                }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+//                                e.printStackTrace();
+//                        }
+//                });
 
                 return rpValue;
         }

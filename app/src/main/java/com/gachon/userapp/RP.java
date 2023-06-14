@@ -182,7 +182,8 @@ public class RP {
         for (int i = 0; i < pathDirection.size(); i++) {
             if (pathDirection.get(i).equals("endOfFloor")) {    // divide based on "endOfFloor"
                 isDivided = true;
-                if (pathIndex.get(i) < 49) {    // 출발지가 4층, 목적지가 5층
+                if (pathIndex.get(i) < 49 ||
+                        (pathIndex.get(i) >= 95 && pathIndex.get(i) <= 97)) {   // 출발지가 4층, 목적지가 5층
                     startFloor = 4;
                     for (int j = 0; j <= i; j++) {
                         if (j == 0 || !pathDirection.get(j).equals("way")) {
@@ -212,7 +213,8 @@ public class RP {
         }
 
         if (!isDivided) {   // 출발지와 목적지의 층이 같을 때
-            if (pathIndex.get(0) < 49) {    // 4층
+            if (pathIndex.get(0) < 49 ||
+                    (pathIndex.get(0) >= 95 && pathIndex.get(0) <= 97)) {    // 4층
                 startFloor = 4;
                 for (int i = 0; i < pathDirection.size(); i++) {
                     if (i == 0 || !pathDirection.get(i).equals("way")) {
@@ -384,11 +386,13 @@ public class RP {
                 new HashMap<String,Double>(){{
                     put("4_13", 210.0);
                     put("4_15", 205.0);
+                    put("4_95", 126.6027);
                 }}));
         add(new ReferencePointDTO("4_15", "413호 앞", 260,1490,
                 new HashMap<String,Double>(){{
                     put("4_14", 205.0);
                     put("4_16", 126.0);
+                    put("4_96", 127.2006);
                 }}));
         add(new ReferencePointDTO("4_16", "412호 앞", 260,1616,
                 new HashMap<String,Double>(){{
@@ -429,6 +433,7 @@ public class RP {
                     put("4_21", 161.0);
                     put("4_23", 158.0);
                     put("4_24", 88.32326986700618);
+                    put("4_97", 50.0);
                 }}));
         add(new ReferencePointDTO("4_23", "407A호 앞", 954,1845,
                 new HashMap<String,Double>(){{
@@ -671,6 +676,7 @@ public class RP {
                 new HashMap<String,Double>(){{
                     put("5_18", 84.0);
                     put("5_20", 98.0);
+                    put("5_99", 230.0);
                 }}));
         add(new ReferencePointDTO("5_20", "509호 앞", 442,1845,
                 new HashMap<String,Double>(){{
@@ -683,6 +689,7 @@ public class RP {
                     put("5_20", 193.0);
                     put("5_22", 161.0);
                     put("4_21", STAIR);
+                    put("5_98", 55.0);
                 }}));
         add(new ReferencePointDTO("5_22", "507호 앞", 796,1845,
                 new HashMap<String,Double>(){{
@@ -823,27 +830,27 @@ public class RP {
         // 4층 4_97 (index 97) "407호 (6)"
         // 5층 5_98 (index 98) "508호 (5)"
         // 5층 5_99 (index 99) "510호 (6)"
-        add(new ReferencePointDTO("4_95", "414호 (1)", 260,1285,
+        add(new ReferencePointDTO("4_95", "414호 (1)", 158,1360,
                 new HashMap<String,Double>(){{
                     put("4_14", 126.6027);
                 }}));
-        add(new ReferencePointDTO("4_96", "413호 (8)", 260,1490,
+        add(new ReferencePointDTO("4_96", "413호 (8)", 158,1414,
                 new HashMap<String,Double>(){{
                     put("4_15", 127.2006);
                 }}));
-        add(new ReferencePointDTO("4_97", "407호 (6)", 796,1845,
+        add(new ReferencePointDTO("4_97", "407호 (6)", 796,1900,
                 new HashMap<String,Double>(){{
                     put("4_22", 50.0);
                 }}));
-        add(new ReferencePointDTO("5_98", "508호 (5)", 635,1845,
+        add(new ReferencePointDTO("5_98", "508호 (5)", 635,1900,
                 new HashMap<String,Double>(){{
                     put("5_21", 55.0);
                 }}));
-        add(new ReferencePointDTO("5_99", "510호 (6)", 344,1845,
+        add(new ReferencePointDTO("5_99", "510호 (6)", 344,2075,
                 new HashMap<String,Double>(){{
                     put("5_19", 230.0);
                 }}));
-        
+
     }};
 
 //    public void calculateWeight() //weight 값 넣을 때 사용했음
