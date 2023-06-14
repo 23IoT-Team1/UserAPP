@@ -302,10 +302,15 @@ public class RP {
         return place;
     }
 
-    // rp data (size: 95)
+    // rp data (size: 95) (now size: 100)
     // 4층 4_1 ~ 4_49 (index 0 ~ 48)
     // 5층 5_1 ~ 5_46 (index 49 ~ 94)
-    // 마지막에 추가 4층
+    // 아래는 마지막에 추가
+    // 4층 4_95 (index 95) "414호 (1)"
+    // 4층 4_96 (index 96) "413호 (8)"
+    // 4층 4_97 (index 97) "407호 (6)"
+    // 5층 5_98 (index 98) "508호 (5)"
+    // 5층 5_99 (index 99) "510호 (6)"
     private static final ArrayList<ReferencePointDTO> rpList = new ArrayList(){{
 
         add(new ReferencePointDTO("4_1", "4층 아르테크네", 260,161,
@@ -811,6 +816,32 @@ public class RP {
                     put("5_44", 110.0);
                     put("5_20", 119.0);
                     put("4_49", STAIR);
+                }}));
+
+        // 4층 4_95 (index 95) "414호 (1)"
+        // 4층 4_96 (index 96) "413호 (8)"
+        // 4층 4_97 (index 97) "407호 (6)"
+        // 5층 5_98 (index 98) "508호 (5)"
+        // 5층 5_99 (index 99) "510호 (6)"
+        add(new ReferencePointDTO("4_95", "414호 (1)", 260,1285,
+                new HashMap<String,Double>(){{
+                    put("4_14", 126.6027);
+                }}));
+        add(new ReferencePointDTO("4_96", "413호 (8)", 260,1490,
+                new HashMap<String,Double>(){{
+                    put("4_15", 127.2006);
+                }}));
+        add(new ReferencePointDTO("4_97", "407호 (6)", 796,1845,
+                new HashMap<String,Double>(){{
+                    put("4_22", 50.0);
+                }}));
+        add(new ReferencePointDTO("5_98", "508호 (5)", 635,1845,
+                new HashMap<String,Double>(){{
+                    put("5_21", 55.0);
+                }}));
+        add(new ReferencePointDTO("5_99", "510호 (6)", 344,1845,
+                new HashMap<String,Double>(){{
+                    put("5_19", 230.0);
                 }}));
         
     }};
