@@ -48,10 +48,10 @@ public class SenderToServer {
                 Log.d(TAG, json);
 
 
-//                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient();
 
                 Log.e("테스트","testsets");
-/*
+
                 Request request = new Request.Builder()
                         .url("http://172.16.63.238:8080/rp")
                         .post(RequestBody.create(MediaType.parse("application/json"), json))
@@ -79,7 +79,7 @@ public class SenderToServer {
                         public void onFailure(@NonNull Call call, @NonNull IOException e) {
                                 e.printStackTrace();
                         }
-                });*/
+                });
 
                 return rpValue;
         }

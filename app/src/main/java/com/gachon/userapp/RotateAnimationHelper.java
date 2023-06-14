@@ -51,12 +51,15 @@ public class RotateAnimationHelper {
         Log.d("pivotY1111", String.valueOf(pivotY));
         Log.d("pivotX/ containerWidth", String.valueOf(pivotY/ containerHeight));
         Log.d("pivotY/ containerHeight", String.valueOf(pivotY/ containerHeight));*/
-            RotateAnimation ra = new RotateAnimation(
+        Log.d("~~~~~~~~~~~~~~~~~~~",String.valueOf(mCurrentDegree));
+
+        RotateAnimation ra = new RotateAnimation(
                 mCurrentDegree,
                 -azimuthunDegress,
                 Animation.ABSOLUTE, pivotX,
                 Animation.ABSOLUTE, pivotY
         );
+
         ra.setDuration(duration);
 //        ra.setFillEnabled(true);
         ra.setFillBefore(true);

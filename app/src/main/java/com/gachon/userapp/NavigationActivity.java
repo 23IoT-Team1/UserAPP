@@ -306,12 +306,13 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
                     mLastMagnetormeter[2] = event.values[2];
                     SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetormeter);
 
-                    mCurrentDegree = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0]) + 85) % 360;
-                    azimuthunDegress = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0]) + 360) % 360;
                     new Handler().postDelayed(new Runnable()    // view_scale을 받아온 후에 그 뒤 실행
                     {
                         @Override
                         public void run() {
+                            mCurrentDegree = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0])+95) % 360;
+                            Log.d("!!!!!!!!!!!!!!!!!!!!",String.valueOf(mCurrentDegree));
+                            azimuthunDegress = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0]) + 360) % 360;
                             //rotate
                             rotateAnimationHelper.rotate(mCurrentDegree, -azimuthunDegress, 1000);
                         }
