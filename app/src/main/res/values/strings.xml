@@ -54,6 +54,9 @@
         <item>운동장 방향 엘리베이터 앞</item>
         <item>운동장 방향 엘리베이터 옆 복도</item>
         //4_48
+        <item>407호 (6)</item>
+        <item>413호 (8)</item>
+        <item>414호 (1)</item>
     </string-array>
 
     <string-array name="user_5F">
@@ -103,6 +106,8 @@
         <item>운동장 방향 엘리베이터 앞</item>
         <item>운동장 방향 엘리베이터 옆 복도</item>
         //5_45
+        <item>508호 (5)</item>
+        <item>510호 (6)</item>
     </string-array>
 
 

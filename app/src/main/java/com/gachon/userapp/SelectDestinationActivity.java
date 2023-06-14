@@ -252,10 +252,12 @@ public class SelectDestinationActivity extends AppCompatActivity {
                 destinationPin.setY((y / view_scale - 15) * density);
 
                 // 보이는 층 바뀌게
-                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) && minIndex >= 49) {
+                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) &&
+                        ((minIndex >= 49 && minIndex < 95) || minIndex == 98 || minIndex == 99 )) {
                     radioButton_5F.setChecked(true);
                 }
-                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) && minIndex < 49) {
+                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) &&
+                        (minIndex < 49) || minIndex == 95 || minIndex == 96 || minIndex == 97) {
                     radioButton_4F.setChecked(true);
                 }
 
@@ -297,10 +299,12 @@ public class SelectDestinationActivity extends AppCompatActivity {
                 destinationPin.setY((y / view_scale - 15) * density);
 
                 // 보이는 층 바뀌게
-                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) && minIndex >= 49) {
+                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) &&
+                        ((minIndex >= 49 && minIndex < 95) || minIndex == 98 || minIndex == 99 )) {
                     radioButton_5F.setChecked(true);
                 }
-                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) && minIndex < 49) {
+                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) &&
+                        (minIndex < 49) || minIndex == 95 || minIndex == 96 || minIndex == 97) {
                     radioButton_4F.setChecked(true);
                 }
 
@@ -341,10 +345,12 @@ public class SelectDestinationActivity extends AppCompatActivity {
                 destinationPin.setY((y / view_scale - 15) * density);
 
                 // 보이는 층 바뀌게
-                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) && minIndex >= 49) {
+                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) &&
+                        ((minIndex >= 49 && minIndex < 95) || minIndex == 98 || minIndex == 99 )) {
                     radioButton_5F.setChecked(true);
                 }
-                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) && minIndex < 49) {
+                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) &&
+                        (minIndex < 49) || minIndex == 95 || minIndex == 96 || minIndex == 97) {
                     radioButton_4F.setChecked(true);
                 }
 
@@ -385,10 +391,12 @@ public class SelectDestinationActivity extends AppCompatActivity {
                 destinationPin.setY((y / view_scale - 15) * density);
 
                 // 보이는 층 바뀌게
-                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) && minIndex >= 49) {
+                if ((spinner_Floor.getSelectedItem().equals("4F") || radioButton_4F.isChecked()) &&
+                        ((minIndex >= 49 && minIndex < 95) || minIndex == 98 || minIndex == 99 )) {
                     radioButton_5F.setChecked(true);
                 }
-                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) && minIndex < 49) {
+                else if ((spinner_Floor.getSelectedItem().equals("5F") || radioButton_5F.isChecked()) &&
+                        (minIndex < 49) || minIndex == 95 || minIndex == 96 || minIndex == 97) {
                     radioButton_4F.setChecked(true);
                 }
 

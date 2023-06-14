@@ -1,3 +1,5 @@
+//arrayList->gson->json 데이터 변환과 okhttp3를 이용한 데이터 전송
+//출처 : https://snowdeer.github.io/android/2017/03/03/get-and-post-and-put-using-okhttp/
 package com.gachon.userapp;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;

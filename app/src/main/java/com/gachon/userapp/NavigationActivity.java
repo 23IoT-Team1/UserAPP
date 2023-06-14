@@ -249,7 +249,8 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
                 case "elevator":    // 층이 바뀜
                     imageView_direction.setImageResource(R.drawable.d_stair);
                     // 층을 올라가는지 내려가는지 판별
-                    if (pathIndex.get(nowDirectionIndex) < 49) {    // 4층으로 갈 때
+                    if (pathIndex.get(nowDirectionIndex) < 49 ||
+                            (pathIndex.get(nowDirectionIndex) >= 95 && pathIndex.get(nowDirectionIndex) <= 97)) {    // 4층으로 갈 때
                         textView_LeftToChangePoint.setText("Go down");
                         textView_Direction.setText("to the 4th floor");
                         textView_ChangePointPlace.setText("");
@@ -435,7 +436,8 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
                 case "elevator":    // 층이 바뀜
                     imageView_direction.setImageResource(R.drawable.d_stair);
                     // 층을 올라가는지 내려가는지 판별
-                    if (pathIndex.get(nowDirectionIndex) < 49) {    // 4층으로 갈 때
+                    if (pathIndex.get(nowDirectionIndex) < 49 ||
+                            (pathIndex.get(nowDirectionIndex) >= 95 && pathIndex.get(nowDirectionIndex) <= 97)) {    // 4층으로 갈 때
                         textView_LeftToChangePoint.setText("Go down");
                         textView_Direction.setText("to the 4th floor");
                         textView_ChangePointPlace.setText("");
