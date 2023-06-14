@@ -18,7 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class WifiScanner {
-
+    public String rpValue="4-1";
     public static final int REQUEST_PERMISSION_CODE = 123;
     public final String[] permissions = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -43,7 +43,6 @@ public class WifiScanner {
 
 
     public void scanWifi() {
-        Log.d("wifi scan전 입니다.","wifi scan전 입니다.");
         if (start) {
             if (!wifiManager.isWifiEnabled()) {
                 Toast.makeText(context, "WIFI DISABLED", Toast.LENGTH_LONG).show();
@@ -71,7 +70,6 @@ public class WifiScanner {
     }
 
     public BroadcastReceiver getWifiReceiver() {
-        Log.d("wifiReceiver 리턴 전입니다.","wifiReceiver 리턴 전입니다.");
 
         return wifiReceiver;
     }
@@ -79,7 +77,6 @@ public class WifiScanner {
         public final BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("wifiReceiver 리턴 후 시작","wifiReceiver 리턴 후 시작");
             scanResults.clear();
             scanResults.addAll(wifiManager.getScanResults());
 
@@ -110,10 +107,20 @@ public class WifiScanner {
             }
             SenderToServer sender = new SenderToServer(arrayList);
 
-            GetLocationActivity GLA = (GetLocationActivity) context;
-            GLA.btnclick = true;
-            GLA.set_rpValue(sender.send());
-            Log.d("WifiScanner", "GLA");
+            if (context.getClass() == GetLocationActivity.class) {
+                GetLocationActivity GLA = (GetLocationActivity) context;
+                GLA.btnclick = true;
+                rpValue = String.valueOf(sender.send());
+                GLA.set_rpValue(rpValue);
+                Log.d("WifiScanner", "GLA");
+            }
+            else if (context.getClass() == NavigationActivity.class) {
+                NavigationActivity NA = (NavigationActivity) context;
+                rpValue = String.valueOf(sender.send());
+                Log.d("제발제발제발제발제발제발제발", rpValue);
+                NA.set_rpValue(rpValue);
+            }
+            else { Log.d("WifiScanner", "안돼"); }
 
         }
     };

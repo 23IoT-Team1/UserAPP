@@ -1,5 +1,3 @@
-//arrayList->gson->json 데이터 변환과 okhttp3를 이용한 데이터 전송
-//출처 : https://snowdeer.github.io/android/2017/03/03/get-and-post-and-put-using-okhttp/
 package com.gachon.userapp;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
@@ -16,6 +14,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -27,33 +26,25 @@ import okhttp3.Response;
 
 public class SenderToServer {
 
-        // Convert the measured values to JSON
-
         private static node request_body;
-        private String rpValue;
+        private String rpValue="GOD BLESS YOU";
+        private CountDownLatch latch;
 
-        public SenderToServer(ArrayList arrayList){
-
-                // rp는 아래 함수에 매칭 후 넣기
-
-                //빈 arraylist에 집어넣어줌
-                //constructor에서 받아온 arraylist는
-                // scanWifiActivity에서 저장한 5개의 AP 정보를 WifiDTO 형식으로 담은 Arraylist이다
+        public SenderToServer(ArrayList arrayList) {
                 request_body = new node(arrayList);
-
+                latch = new CountDownLatch(1);
         }
+
         public String send() {
                 Gson gson = new Gson();
                 String json = gson.toJson(request_body);
                 if (json != null) {
-                        Log.d(TAG, json);
+                        Log.d("SCAN 값~~~~~~~~~~~~~~", json);
                 } else {
                         Log.d(TAG, "JSON is null");
                 }
-
+/*
                 OkHttpClient client = new OkHttpClient();
-
-                Log.e("테스트","testsets");
 
                 Request request = new Request.Builder()
                         .url("http://172.16.232.218:8080/rp/position")
@@ -71,29 +62,26 @@ public class SenderToServer {
                                                 JSONObject jsonObject = new JSONObject(responseBody);
                                                 rpValue = jsonObject.getString("rp");
                                                 Log.d(TAG, "RP Value: " + rpValue);
-
                                         } catch (JSONException e) {
-                                                Log.e("테스트2222","testsets");
-
                                                 e.printStackTrace();
                                         }
                                 }
+                                latch.countDown(); // Release the latch after receiving the response
                         }
 
                         @Override
                         public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                                Log.e("테스트3333","testsets");
                                 e.printStackTrace();
+                                latch.countDown(); // Release the latch in case of failure
                         }
                 });
 
-
+                try {
+                        latch.await(); // Wait until the latch is released
+                } catch (InterruptedException e) {
+                        e.printStackTrace();
+                }*/
 
                 return rpValue;
         }
-
-
-
-
 }
-
