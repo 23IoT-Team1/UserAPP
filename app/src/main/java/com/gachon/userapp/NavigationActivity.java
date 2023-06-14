@@ -156,12 +156,13 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
                 destinationPin.setVisibility(View.VISIBLE);
                 destinationPin.setX((x_d / view_scale - DESTINATION_PIN_SIZE_HALF) * density);
                 destinationPin.setY((y_d / view_scale - DESTINATION_PIN_SIZE_HALF*2) * density);
+
                 //pointer animation
                 pivotX = (x_c / view_scale - CURRENT_PIN_SIZE_HALF) * density ;
                 pivotY = (y_c / view_scale - CURRENT_PIN_SIZE_HALF) * density ;
-
                 rotateAnimationHelper = new RotateAnimationHelper(currentLocationPin, imageView);
                 rotateAnimationHelper.initialize(pivotX,pivotY);
+
                 // current location이 있는 층으로 spinner랑 radioButton 초기화
                 if (currentRP.startsWith("4")) {
                     radioButton_4F.setChecked(true);
@@ -276,7 +277,9 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
         });
 
         // Initialize the WifiScanner instance
-        wifiScanner = new WifiScanner(this, (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), new ArrayList<>());
+        wifiScanner = new WifiScannerForNA(this, (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), new ArrayList<>());
+        this.registerReceiver(wifiScanner.getWifiReceiver(), new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        //...register가 없었잖아요...ㅜㅜㅠㅠ 이게 문제였던 것 같으니까 코드 정리할 때 WifiScannerForNA를 지우고 WifiScanner.java 코드를 복원하는 게 좋을 것 같아요
         // Create a handler to schedule the Wi-Fi scan periodically
         handler = new Handler();
 
@@ -291,22 +294,36 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
         }
         else */
 
-        if (event.sensor == magnetormeter) {
+        if (currentLocationPin.getVisibility() == View.VISIBLE) {
+            if ((radioButton_4F.isChecked() && currentRP.startsWith("4_")) ||
+                    (radioButton_5F.isChecked() && currentRP.startsWith("5_"))) {
 
-            //System.arraycopy(event.values, 0, mLastMagnetormeter, 0, 2);
-            mLastMagnetormeter[0] = event.values[0];
-            mLastMagnetormeter[1] = event.values[1];
-            mLastMagnetormeter[2] = event.values[2];
-            SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetormeter);
+                if (event.sensor == magnetormeter) {
 
-            mCurrentDegree = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0])+85) % 360;
-            azimuthunDegress = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0]) + 360) % 360;
+                    //System.arraycopy(event.values, 0, mLastMagnetormeter, 0, 2);
+                    mLastMagnetormeter[0] = event.values[0];
+                    mLastMagnetormeter[1] = event.values[1];
+                    mLastMagnetormeter[2] = event.values[2];
+                    SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetormeter);
 
-            //rotate
-            rotateAnimationHelper.rotate(mCurrentDegree, -azimuthunDegress, 1000);
-            mCurrentDegree = -azimuthunDegress;
-        } else if (event.sensor == accelermeter) {
-            System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.length);
+                    mCurrentDegree = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0]) + 85) % 360;
+                    azimuthunDegress = (int) (Math.toDegrees(SensorManager.getOrientation(mR, mOrientation)[0]) + 360) % 360;
+                    new Handler().postDelayed(new Runnable()    // view_scale을 받아온 후에 그 뒤 실행
+                    {
+                        @Override
+                        public void run() {
+                            //rotate
+                            rotateAnimationHelper.rotate(mCurrentDegree, -azimuthunDegress, 1000);
+                        }
+                    }, 200);
+                    mCurrentDegree = -azimuthunDegress;
+                } else if (event.sensor == accelermeter) {
+                    System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.length);
+                }
+            } else {
+                currentLocationPin.setVisibility(View.INVISIBLE);
+//            Log.d("안보이게", "지금");
+            }
         }
     }
 
@@ -326,7 +343,111 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
     }
     public void set_rpValue(String rpValue) {
         this.rpValue = rpValue;
-        Log.d("제발제발제발제발이건 네비게이션네비게이션", this.rpValue);
+        Log.d("제발제발네비게이션", this.rpValue);
+
+        // currentRP에 세팅
+        currentRP = rpValue;
+        currentPlace = rp.rpToPlace(rpValue);
+
+        // set textView
+        textView_Current.setText(currentPlace);
+
+        // 맵핀 좌표
+        int x_c = RP.getRpList().get(rp.rpToIndex(currentRP)).getX();
+        int y_c = RP.getRpList().get(rp.rpToIndex(currentRP)).getY();
+
+        // 맵핀 위치 변경
+        currentLocationPin.setVisibility(View.VISIBLE);
+        currentLocationPin.setX((x_c / view_scale - CURRENT_PIN_SIZE_HALF) * density);
+        currentLocationPin.setY((y_c / view_scale - CURRENT_PIN_SIZE_HALF) * density);
+
+        //pointer animation
+        pivotX = (x_c / view_scale - CURRENT_PIN_SIZE_HALF) * density ;
+        pivotY = (y_c / view_scale - CURRENT_PIN_SIZE_HALF) * density ;
+        rotateAnimationHelper.initialize(pivotX,pivotY);
+
+        // 현위치의 path에서의 순서(index)를 알아내기
+        int nowIndex = -1;
+        for (int i = 0; i < pathIndex.size(); i++) {
+            if (pathIndex.get(i) == rp.rpToIndex(currentRP)) { nowIndex = i; }
+        }
+
+        if (nowIndex == -1) {}  // 아예 path에 없는 rp가 현위치로 잡히면, 현위치마커(핀)만 바꾸고 방향 안내는 바꾸지 말기
+        else if (nowIndex == pathIndex.size() - 1) { // 목적지에 도착했다면
+            imageView_direction.setImageResource(R.drawable.d_destination);
+            textView_LeftToChangePoint.setText("Arrived");
+            textView_Direction.setText("at " + destinationPlace);
+            textView_ChangePointPlace.setText("");
+
+            // 남은 거리 textView(layout)를 안보이게 하고, BackToMain 버튼을 보이게 하기
+            layout_LeftToDestination.setVisibility(View.GONE);
+            button_BackToMain.setVisibility(View.VISIBLE);
+        }
+        else {
+            // 현위치 바로 다음에 있는 left/right/endOfFloor/elevator/destination 값에 따라 UI 변경
+            String nowDirection = "";   // 받아올 string
+            int nowDirectionIndex = -1;
+            for (int i = nowIndex + 1; i < pathDirection.size(); i++) {
+                if (!pathDirection.get(i).equals("way")) {  // way가 아니라 특정값이라면
+                    nowDirection = pathDirection.get(i);
+                    nowDirectionIndex = i;
+                    break;
+                }
+            }
+            // nowDirectionIndex로 거기 place 받아오기
+            String changePointPlace = RP.getRpList().get(pathIndex.get(nowDirectionIndex)).getPlace();
+
+            // changePoint 까지의 거리를 dijkstra로 받고 보정값 곱하기 (소수점은 올림)
+            int weightToChangePoint = (int) (Math.ceil(rp.dijkstra(rp.rpToIndex(currentRP), pathIndex.get(nowDirectionIndex))) * CALIBRATION);
+            // 목적지까지의 거리를 dijkstra로 받고 보정값 곱하기
+            int weightToDestination = (int) (Math.ceil(rp.dijkstra(rp.rpToIndex(currentRP), rp.rpToIndex(destinationRP))) * CALIBRATION);
+            textView_LeftToDestination.setText(weightToDestination + "m");  // 목적지까지 거리 먼저 세팅
+
+            // 혹시 모를 visability 세팅
+            // 남은 거리 textView(layout)를 보이게 하고, BackToMain 버튼을 안보이게 하기
+            layout_LeftToDestination.setVisibility(View.VISIBLE);
+            button_BackToMain.setVisibility(View.GONE);
+
+            // case에 따라 처리
+            switch (nowDirection) {
+                case "left":    // 좌회전
+                    imageView_direction.setImageResource(R.drawable.d_left);
+                    textView_LeftToChangePoint.setText(weightToChangePoint + "m");
+                    textView_Direction.setText("Turn left at ");
+                    textView_ChangePointPlace.setText(changePointPlace);    // ~에서 좌회전. 이런 느낌
+                    break;
+
+                case "right":   // 우회전
+                    imageView_direction.setImageResource(R.drawable.d_right);
+                    textView_LeftToChangePoint.setText(weightToChangePoint + "m");
+                    textView_Direction.setText("Turn right at ");
+                    textView_ChangePointPlace.setText(changePointPlace);
+                    break;
+
+                case "endOfFloor": // 직진
+                case "destination": // 직진
+                    imageView_direction.setImageResource(R.drawable.d_straight);
+                    textView_LeftToChangePoint.setText(weightToChangePoint + "m");
+                    textView_Direction.setText("Go straight to ");
+                    textView_ChangePointPlace.setText(changePointPlace);
+                    break;
+
+                case "elevator":    // 층이 바뀜
+                    imageView_direction.setImageResource(R.drawable.d_stair);
+                    // 층을 올라가는지 내려가는지 판별
+                    if (pathIndex.get(nowDirectionIndex) < 49) {    // 4층으로 갈 때
+                        textView_LeftToChangePoint.setText("Go down");
+                        textView_Direction.setText("to the 4th floor");
+                        textView_ChangePointPlace.setText("");
+                    } else {  // 5층으로 갈 떄
+                        textView_LeftToChangePoint.setText("Go up");
+                        textView_Direction.setText("to the 5th floor");
+                        textView_ChangePointPlace.setText("");
+                    }
+                    break;
+            }
+        }
+
     }
     // declaration
     private void startWifiScan() {
@@ -385,7 +506,7 @@ public class NavigationActivity extends AppCompatActivity implements SensorEvent
     private Timer timer;
     public  String rpValue;
     private Handler handler;
-    private WifiScanner wifiScanner;
+    private WifiScannerForNA wifiScanner;
     //Sensor 관련 선언들
     private SensorManager sensorManager;
     private Sensor magnetormeter,accelermeter;

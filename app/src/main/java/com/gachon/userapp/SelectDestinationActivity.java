@@ -218,6 +218,7 @@ public class SelectDestinationActivity extends AppCompatActivity {
                 intent.putExtra("destination_place", destinationPlace);
                 intent.putExtra("destination_rp", destinationRP);
                 startActivity(intent);
+                finish();
             }
         });
 

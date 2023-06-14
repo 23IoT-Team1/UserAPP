@@ -58,7 +58,8 @@ public class RotateAnimationHelper {
                 Animation.ABSOLUTE, pivotY
         );
         ra.setDuration(duration);
-        ra.setFillAfter(true);
+//        ra.setFillEnabled(true);
+        ra.setFillBefore(true);
         pointer.startAnimation(ra);
     }
 }

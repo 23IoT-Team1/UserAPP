@@ -32,6 +32,8 @@ import java.util.ArrayList;
 
 public class GetLocationActivity extends AppCompatActivity {
 
+    final int CURRENT_PIN_SIZE_HALF = 6;
+    float density;
     float view_scale;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,9 @@ public class GetLocationActivity extends AppCompatActivity {
         button_Retry = findViewById(R.id.button_Retry);
         button_Right = findViewById(R.id.button_Right);
         button_Wrong = findViewById(R.id.button_Wrong);
+        currentLocationPin = findViewById(R.id.currentLocationPin);
 
-        float density = getResources().getDisplayMetrics().density;
+        density = getResources().getDisplayMetrics().density;
         // 조정된 scale 값 받아 오기 (좌표 맞추기 위해)
         imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -55,19 +58,11 @@ public class GetLocationActivity extends AppCompatActivity {
             }
         });
 
-        // activity 불러 오자 마자 바로 wifi scan 후 현위치 결과 뱉기
+        // activity 불러 오자 마자 바로 wifi scan 후 현위치 결과 받아 오기
         wifiScanner = new WifiScanner(this, (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE), new ArrayList<>());
         this.registerReceiver(wifiScanner.getWifiReceiver(), new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiScanner.requestPermissions();
         wifiScanner.scanWifi();
-        // 이후 RP textView 바꾸기. rp를 받아오면 place로 바꿔서 알려주기
-//        String placeValue = rp.rpToPlace(rpValue);
-//        textView_RP.setText(placeValue);
-        // TODO: 받아와서 imageView도 그 층에 맞는 걸로 바꿔주기
-        // 그 후 rp에 따른 좌표에 맵핀을 표시해주기
-        // rp는 저장해서 intent로 넘겨줘야 함
-
-
 
         // 현 위치 다시 인식하는 버튼
         button_Retry.setOnClickListener(new View.OnClickListener() {
@@ -77,14 +72,6 @@ public class GetLocationActivity extends AppCompatActivity {
                 btnclick = false;
 
                 wifiScanner.scanWifi();
-
-                // 이후 RP textView 바꾸기. rp를 받아오면 place로 바꿔서 알려주기
-//                String placeValue = rp.rpToPlace(rpValue);
-//                textView_RP.setText(placeValue);
-                // TODO: 받아와서 imageView도 그 층에 맞는 걸로 바꿔주기
-                // 그 후 rp에 따른 좌표에 맵핀을 표시해주기
-                // rp는 저장해서 intent로 넘겨줘야 함
-
             }
         });
 
@@ -94,12 +81,14 @@ public class GetLocationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(btnclick) {
+                    wifiScanner.stopWifiScan();
                     // place, rp, view_scale 넘겨주면서, 목적지 입력 받는 activity로 이동
                     Intent intent = new Intent(GetLocationActivity.this, SelectDestinationActivity.class);
                     intent.putExtra("current_place", placeValue);
                     intent.putExtra("current_rp", rpValue);
                     intent.putExtra("view_scale", view_scale);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -109,6 +98,7 @@ public class GetLocationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(btnclick){
+                    wifiScanner.stopWifiScan();
                     // 현 위치를 유저에게 직접 입력 받는 화면으로 넘어가기
                     Intent intent = new Intent(GetLocationActivity.this, SelectLocationActivity.class);
                     startActivity(intent);
@@ -123,18 +113,31 @@ public class GetLocationActivity extends AppCompatActivity {
         super.onPause();
         // Set activity status
         ActivityStatusChecker.setActivityStatus(false);
-        Toast.makeText(this, "onPause 호출됨", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "onPause 호출됨", Toast.LENGTH_SHORT).show();
+        Log.d("GLA", "onPause 호출됨");
     }
 
     public void set_rpValue(String rpValue) {
         this.rpValue = rpValue;
-        Log.d("지금제발제발제발제발", this.rpValue);
+        Log.d("GLA에 rpValue 세팅", this.rpValue);
         placeValue = rp.rpToPlace(rpValue);
         textView_RP.setText(placeValue);
 
-        // TODO: 받아와서 imageView도 그 층에 맞는 걸로 바꿔주기
-        // TODO: 그 후 rp에 따른 좌표에 맵핀을 표시해주기
-        // rp는 저장해서 intent로 넘겨줘야 함
+        // 받아와서 imageView도 그 층에 맞는 걸로 바꿔주기
+        if(rpValue.startsWith("4")) {
+            imageView.setImageResource(R.drawable.floor4);
+        }
+        else if(rpValue.startsWith("5")) {
+            imageView.setImageResource(R.drawable.floor5);
+        }
+        // 그 rp의 좌표에 맵핀을 표시
+        int x = rp.getRpList().get(rp.rpToIndex(rpValue)).getX();
+        int y = rp.getRpList().get(rp.rpToIndex(rpValue)).getY();
+
+        // 맵핀 위치 바꾸기
+        currentLocationPin.setVisibility(View.VISIBLE);
+        currentLocationPin.setX((x / view_scale - CURRENT_PIN_SIZE_HALF) * density);
+        currentLocationPin.setY((y / view_scale - CURRENT_PIN_SIZE_HALF) * density);
 
 
     }
@@ -142,6 +145,7 @@ public class GetLocationActivity extends AppCompatActivity {
 
     // declaration
     private ImageView imageView;
+    private ImageView currentLocationPin;
     private TextView textView_RP;
     private Button button_Retry;
     private Button button_Right;

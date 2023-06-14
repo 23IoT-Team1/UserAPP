@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class WifiScanner {
+public class WifiScannerForNA {
 
     public static final int REQUEST_PERMISSION_CODE = 123;
     public final String[] permissions = {
@@ -33,7 +33,7 @@ public class WifiScanner {
     public final ArrayList<WifiDTO> arrayList;
     public boolean start;
 
-    public WifiScanner(Context context, WifiManager wifiManager, ArrayList<WifiDTO> arrayList) {
+    public WifiScannerForNA(Context context, WifiManager wifiManager, ArrayList<WifiDTO> arrayList) {
         this.context = context;
         this.wifiManager = wifiManager;
         this.arrayList = arrayList;
@@ -109,10 +109,9 @@ public class WifiScanner {
             }
             SenderToServer sender = new SenderToServer(arrayList);
 
-            GetLocationActivity GLA = (GetLocationActivity) context;
-            GLA.btnclick = true;
-            GLA.set_rpValue(sender.send());
-            Log.d("WifiScanner", "GLA");
+            NavigationActivity NA = (NavigationActivity) context;
+            NA.set_rpValue(sender.send());
+            Log.d("WifiScanner", "NA");
 
         }
     };

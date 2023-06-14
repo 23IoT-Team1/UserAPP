@@ -305,6 +305,7 @@ public class RP {
     // rp data (size: 95)
     // 4층 4_1 ~ 4_49 (index 0 ~ 48)
     // 5층 5_1 ~ 5_46 (index 49 ~ 94)
+    // 마지막에 추가 4층
     private static final ArrayList<ReferencePointDTO> rpList = new ArrayList(){{
 
         add(new ReferencePointDTO("4_1", "4층 아르테크네", 260,161,

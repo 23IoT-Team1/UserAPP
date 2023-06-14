@@ -7,6 +7,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Shader;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class CanvasView extends View {
 
             if (pointIndexOf4.size() == 1) {
                 paint.setColor(colors[firstColorOf4]);
-                canvas.drawCircle(pathPoint.get(pointIndexOf4.get(0)).x / view_scale * density, pathPoint.get(pointIndexOf4.get(0)).y / view_scale * density, 2f, paint);
+                canvas.drawCircle(pathPoint.get(pointIndexOf4.get(0)).x / view_scale * density, pathPoint.get(pointIndexOf4.get(0)).y / view_scale * density, 3f, paint);
             }
             else if (pointIndexOf4.size() > 1) {
 
@@ -85,9 +86,12 @@ public class CanvasView extends View {
                     float x2 = pathPoint.get(pointIndexOf4.get(index+1)).x / view_scale * density;
                     float y2 = pathPoint.get(pointIndexOf4.get(index+1)).y / view_scale * density;
 
-                    // i 동그라미
-                    paint.setColor(colors[i]);
-                    canvas.drawCircle(x1, y1, 1f, paint);
+                    if (i != 0) {
+                        // i 동그라미
+                        paint.setColor(colors[i]);
+                        Log.d("color4", String.valueOf(i));
+                        canvas.drawCircle(x1, y1, 1f, paint);
+                    }
 
                     // draw gradient line (drawPath 대신)
                     paint.setShader(new LinearGradient(x1,y1,x2,y2, colors[i], colors[i+1], Shader.TileMode.CLAMP));
@@ -99,8 +103,8 @@ public class CanvasView extends View {
                 float x = pathPoint.get(pointIndexOf4.get(index)).x / view_scale * density;
                 float y = pathPoint.get(pointIndexOf4.get(index)).y / view_scale * density;
                 paint.setColor(colors[lastColorOf4]);
+                Log.d("lastcolor4", String.valueOf(lastColorOf4));
                 canvas.drawCircle(x, y, 3f, paint);
-
             }
         }
         else {  // 5층 보여줄 때
@@ -119,9 +123,12 @@ public class CanvasView extends View {
                     float x2 = pathPoint.get(pointIndexOf5.get(index+1)).x / view_scale * density;
                     float y2 = pathPoint.get(pointIndexOf5.get(index+1)).y / view_scale * density;
 
-                    // i 동그라미
-                    paint.setColor(colors[i]);
-                    canvas.drawCircle(x1, y1, 1f, paint);
+                    if (i != 0) {
+                        // i 동그라미
+                        paint.setColor(colors[i]);
+                        Log.d("color5", String.valueOf(i));
+                        canvas.drawCircle(x1, y1, 1f, paint);
+                    }
 
                     // draw gradient line (drawPath 대신)
                     paint.setShader(new LinearGradient(x1,y1,x2,y2, colors[i], colors[i+1], Shader.TileMode.CLAMP));
@@ -133,6 +140,7 @@ public class CanvasView extends View {
                 float x = pathPoint.get(pointIndexOf5.get(index)).x / view_scale * density;
                 float y = pathPoint.get(pointIndexOf5.get(index)).y / view_scale * density;
                 paint.setColor(colors[lastColorOf5]);
+                Log.d("lastcolor5", String.valueOf(lastColorOf5));
                 canvas.drawCircle(x, y, 3f, paint);
 
             }

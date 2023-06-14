@@ -30,7 +30,7 @@ public class SenderToServer {
         // Convert the measured values to JSON
 
         private static node request_body;
-        private String rpValue="4_1";
+        private String rpValue="4_44";
 
         public SenderToServer(ArrayList arrayList){
 
