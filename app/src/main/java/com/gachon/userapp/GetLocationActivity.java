@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -51,6 +52,7 @@ public class GetLocationActivity extends AppCompatActivity {
         button_Retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Scanning ", Toast.LENGTH_SHORT).show();
                 // 위에서 처음 불러올 때 한 거 똑같이 하기
                 btnclick = false;
                 wifiScanner.scanWifi();
